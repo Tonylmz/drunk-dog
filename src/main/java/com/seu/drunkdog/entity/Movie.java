@@ -7,18 +7,6 @@ public class Movie {
     private String director;
     private String actor;
 
-    public Movie(int id, String name, String introduction, String director, String actor, String category, double score, String picture_link, String release_period) {
-        this.id = id;
-        this.name = name;
-        this.introduction = introduction;
-        this.director = director;
-        this.actor = actor;
-        this.category = category;
-        this.score = score;
-        this.picture_link = picture_link;
-        this.release_period = release_period;
-    }
-
     private String category;
     private double score;
     private String picture_link;

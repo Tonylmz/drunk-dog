@@ -4,11 +4,6 @@ public class Tag {
     private int id;
     private String category;
 
-    public Tag(int id, String category) {
-        this.id = id;
-        this.category = category;
-    }
-
     public int getId() {
         return id;
     }

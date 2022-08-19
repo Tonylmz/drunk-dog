@@ -6,13 +6,6 @@ public class MovieTag {
     private int movie_tag;
     private double movie_weight;
 
-    public MovieTag(int id, int movie_id, int movie_tag, double movie_weight) {
-        this.id = id;
-        this.movie_id = movie_id;
-        this.movie_tag = movie_tag;
-        this.movie_weight = movie_weight;
-    }
-
     public int getId() {
         return id;
     }

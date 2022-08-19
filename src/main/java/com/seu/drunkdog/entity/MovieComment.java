@@ -10,13 +10,6 @@ public class MovieComment {
         return id;
     }
 
-    public MovieComment(int id, int movie_id, String comment, double score) {
-        this.id = id;
-        this.movie_id = movie_id;
-        this.comment = comment;
-        this.score = score;
-    }
-
     public void setId(int id) {
         this.id = id;
     }

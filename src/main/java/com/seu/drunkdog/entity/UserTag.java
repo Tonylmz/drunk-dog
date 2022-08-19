@@ -6,13 +6,6 @@ public class UserTag {
     private int user_tag;
     private double user_weight;
 
-    public UserTag(int id, int user_id, int user_tag, double user_weight) {
-        this.id = id;
-        this.user_id = user_id;
-        this.user_tag = user_tag;
-        this.user_weight = user_weight;
-    }
-
     public int getId() {
         return id;
     }

@@ -5,12 +5,6 @@ public class User {
     private String name;
     private String password;
 
-    public User(int id, String user_name, String password) {
-        this.id = id;
-        this.name = user_name;
-        this.password = password;
-    }
-
     public int getId() {
         return id;
     }
