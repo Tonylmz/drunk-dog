@@ -1,5 +1,7 @@
 package com.seu.drunkdog.entity;
 
+import net.sf.json.JSONObject;
+
 public class Movie {
     private int id;
     private String name;
@@ -82,5 +84,18 @@ public class Movie {
 
     public void setRelease_period(String release_period) {
         this.release_period = release_period;
+    }
+
+    public String getAll(){
+        JSONObject js=new JSONObject();
+        js.put("id",id);
+        js.put("name",name);
+        js.put("introduction",introduction);
+        js.put("director",director);js.put("actor",actor);
+        js.put("category",category);
+        js.put("scorer",score);
+        js.put("picture_link",picture_link);
+        js.put("release_period",release_period);
+        return js.toString();
     }
 }

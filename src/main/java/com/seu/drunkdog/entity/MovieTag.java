@@ -4,7 +4,7 @@ public class MovieTag {
     private int id;
     private int movie_id;
     private int movie_tag;
-    private double movie_weight;
+//    private double movie_weight;
 
     public int getId() {
         return id;
@@ -30,11 +30,11 @@ public class MovieTag {
         this.movie_tag = movie_tag;
     }
 
-    public double getMovie_weight() {
-        return movie_weight;
-    }
-
-    public void setMovie_weight(double movie_weight) {
-        this.movie_weight = movie_weight;
-    }
+//    public double getMovie_weight() {
+//        return movie_weight;
+//    }
+//
+//    public void setMovie_weight(double movie_weight) {
+//        this.movie_weight = movie_weight;
+//    }
 }
