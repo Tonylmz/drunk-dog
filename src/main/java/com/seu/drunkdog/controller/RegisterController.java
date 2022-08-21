@@ -38,9 +38,10 @@ public class RegisterController {
 //        User a = new User();
 //        a.setName(name);
 //        a.setPassword(password);
-        hs.setAttribute("name",name);
+//        hs.setAttribute("name",name);
         res.put("msg", "true");
         String verifyCode = emailService.sendSimpleMail(name);
+        res.put("verifycode", verifyCode);
         Cookie c = new Cookie("verifyCode", verifyCode);
         c.setMaxAge(10800);
         c.setPath("/");

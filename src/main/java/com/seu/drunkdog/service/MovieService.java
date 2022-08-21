@@ -19,7 +19,16 @@ public class MovieService {
     public Movie searchMovie(int id){
         return movieMapper.getMovie(id);
     }
-    public List<Movie> getAllMovie(){
+    public Movie searchTopMovie(int id){
+        return movieMapper.getTopMovie(id);
+    }
+    public List<Movie> searchAllMovie(){
         return movieMapper.findAll();
+    }
+    public void insertMovieComment(int movie_id, String movie_comment){
+        movieMapper.saveMovieComment(movie_id, movie_comment);
+    }
+    public List<String> searchMovieCommentById(int movie_id){
+        return movieMapper.getMovieComment(movie_id);
     }
 }

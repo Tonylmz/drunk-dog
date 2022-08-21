@@ -1,6 +1,5 @@
 package com.seu.drunkdog.controller;
 
-import com.seu.drunkdog.entity.UserTag;
 import com.seu.drunkdog.mapper.TagMapper;
 import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONObject;
@@ -27,10 +26,13 @@ public class UserController {
         JSONObject res = new JSONObject();
         String[] initialTagArray = request.getParameterValues("initialTagArray");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
+//        System.out.println(initialTagArray.length);
         for(int i = 0; i < initialTagArray.length; i++){
             int user_tag = userService.getIdByTag(initialTagArray[i]);
             userService.InsertUserTag(user_id, user_tag, 1);
+            res.put("tag",user_tag);
         }
+        response.getWriter().write(res.toString());
     }
     @RequestMapping("/clickToSaveTag")
     public void clickToSaveTag(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -39,13 +41,16 @@ public class UserController {
         JSONObject res = new JSONObject();
         String newTag = request.getParameter("newTag");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-        if(tagMapper.searchIdByCategory(newTag) == 0){
+        if(tagMapper.getIdByCategory(newTag) == 0){
             tagMapper.saveCategory(newTag);
             int user_tag = userService.getIdByTag(newTag);
             userService.InsertUserTag(user_id, user_tag, 0.4);
+            res.put("newTag", newTag);
         }
         else{
             userService.updateUserWeight(user_id);
+            res.put("oldTag", newTag);
         }
+        response.getWriter().write(res.toString());
     }
 }

@@ -11,5 +11,8 @@ public class TagService {
     @Autowired
     TagMapper tagMapper;
     public void insertTag(String category){tagMapper.saveCategory(category);}
-    public int getTagById(String category){return tagMapper.searchIdByCategory(category);}
+    public int searchIdByTag(String category){return tagMapper.getIdByCategory(category);}
+
+    public String searchTagById(int id){ return tagMapper.getCategoryById(id); }
+
 }

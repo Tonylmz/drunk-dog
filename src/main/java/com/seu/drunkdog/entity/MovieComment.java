@@ -1,10 +1,11 @@
 package com.seu.drunkdog.entity;
 
+import net.sf.json.JSONObject;
+
 public class MovieComment {
     private int id;
     private int movie_id;
     private String comment;
-    private double score;
 
     public int getId() {
         return id;
@@ -30,11 +31,11 @@ public class MovieComment {
         this.comment = comment;
     }
 
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
+    public String getAll(){
+        JSONObject js=new JSONObject();
+        js.put("id",id);
+        js.put("movie_id",movie_id);
+        js.put("comment",comment);
+        return js.toString();
     }
 }

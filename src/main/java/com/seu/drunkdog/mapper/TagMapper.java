@@ -10,5 +10,7 @@ public interface TagMapper {
     @Insert("insert into tag values(null, #{category})")
     void saveCategory(@Param("category") String category);
     @Select("select ifnull((select id from tag where category = #{category}), 0) as id")
-    int searchIdByCategory(@Param("category")String category);
+    int getIdByCategory(@Param("category")String category);
+    @Select("select category from tag where id = #{id}")
+    String getCategoryById(@Param("id") int id);
 }

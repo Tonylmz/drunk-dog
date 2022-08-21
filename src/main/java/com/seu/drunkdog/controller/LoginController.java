@@ -76,13 +76,13 @@ public class LoginController {
             Cookie d=new Cookie("islogin","true");
             d.setMaxAge(10800);
             d.setPath("/");
-            if(name.equals("admin@qq.com"))
-            {
-                Cookie f=new Cookie("service","true");
-                f.setMaxAge(10800);
-                f.setPath("/");
-                response.addCookie(f); res.put("service","true");
-            }
+//            if(name.equals("admin@qq.com"))
+//            {
+//                Cookie f=new Cookie("service","true");
+//                f.setMaxAge(10800);
+//                f.setPath("/");
+//                response.addCookie(f); res.put("service","true");
+//            }
             response.addCookie(c);
             response.addCookie(d);
             res.put("msg","true");
