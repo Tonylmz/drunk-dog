@@ -41,5 +41,11 @@ public class UserService {
 
     public void getAllById(int user_id){ userMapper.findAllById(user_id); }
 
-    public void InsertUserTag(UserTag userTag){ userMapper.saveUserTag(userTag); }
+    public void InsertUserTag(int user_id, int user_tag, double user_weight){
+        userMapper.saveUserTag(user_id, user_tag, user_weight);
+    }
+
+    public int getIdByTag(String category){ return userMapper.searchIdByTag(category); }
+
+    public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
 }

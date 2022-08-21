@@ -2,10 +2,7 @@ package com.seu.drunkdog.mapper;
 
 import com.seu.drunkdog.entity.User;
 import com.seu.drunkdog.entity.UserTag;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Repository;
@@ -27,5 +24,11 @@ public interface UserMapper {
     List<User>findAllById(@Param("user_id")int user_id);
 
     @Insert("insert into user_tag values(null, #{user_id}, #{user_tag}, #{user_weight})")
-    void saveUserTag(UserTag userTag);
+    void saveUserTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") double user_weight);
+
+    @Select("select id from tag where category = #{category}")
+    int searchIdByTag(@Param("category")String category);
+
+    @Update("update user_tag set user_weight = user_weight + 0.4 where user_id = #{user_id}")
+    void updateUserWeight(@Param("user_id") int user_id);
 }

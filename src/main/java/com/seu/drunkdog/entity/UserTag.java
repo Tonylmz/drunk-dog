@@ -37,4 +37,5 @@ public class UserTag {
     public void setUser_weight(double user_weight) {
         this.user_weight = user_weight;
     }
+
 }

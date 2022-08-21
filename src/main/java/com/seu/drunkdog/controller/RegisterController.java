@@ -28,22 +28,50 @@ public class RegisterController {
 //        return emailService.sendSimpleMail(name);
 //    }
 //    private  static HashMap<String,String> codemap=new HashMap<>();
-    @RequestMapping("/register")
-    public void register(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping("/register1")
+    public void register1(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
         String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        User a = new User();
-        a.setName(name);
-        a.setPassword(password);
+//        String password = request.getParameter("password");
+//        User a = new User();
+//        a.setName(name);
+//        a.setPassword(password);
+        hs.setAttribute("name",name);
+        res.put("msg", "true");
         String verifyCode = emailService.sendSimpleMail(name);
-        String code = request.getParameter("code");
-        if(verifyCode!=code){
-            res.put("msg", "false");
-        }
-        else{
+        Cookie c = new Cookie("verifyCode", verifyCode);
+        c.setMaxAge(10800);
+        c.setPath("/");
+        response.addCookie(c);
+//        String code = request.getParameter("code");
+//        if(verifyCode!=code){
+//            res.put("msg", "false");
+//        }
+//        else{
+//            userService.InsertUser(name, password);
+//            Cookie c=new Cookie("name",name);
+//            c.setMaxAge(10800);
+//            c.setPath("/");
+//            Cookie d=new Cookie("register","true");
+//            d.setMaxAge(10800);
+//            d.setPath("/");
+//            response.addCookie(c);
+//            response.addCookie(d);
+//        }
+        response.getWriter().write(res.toString());
+    }
+    @RequestMapping("/register2")
+    public void register2(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        HttpSession hs = request.getSession();
+        response.setCharacterEncoding("UTF-8");
+        JSONObject res = new JSONObject();
+        String isOK = request.getParameter("isOK");
+        if(isOK.equals("true") ){
+            res.put("msg", "true");
+            String name = request.getParameter("name");
+            String password = request.getParameter("password");
             userService.InsertUser(name, password);
             Cookie c=new Cookie("name",name);
             c.setMaxAge(10800);
@@ -53,6 +81,9 @@ public class RegisterController {
             d.setPath("/");
             response.addCookie(c);
             response.addCookie(d);
+        }
+        else{
+            res.put("msg", "false");
         }
         response.getWriter().write(res.toString());
     }
