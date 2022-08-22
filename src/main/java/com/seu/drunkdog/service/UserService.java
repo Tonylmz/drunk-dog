@@ -37,7 +37,7 @@ public class UserService {
 
     public List<UserTag> searchAllById(int user_id){ return userMapper.findAllById(user_id); }
 
-    public void InsertUserTag(int user_id, int user_tag, double user_weight){
+    public void InsertUserTag(int user_id, int user_tag, int user_weight){
         userMapper.saveUserTag(user_id, user_tag, user_weight);
     }
 
@@ -46,4 +46,6 @@ public class UserService {
     public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
 
     public List<Movie> searchAllMovieByTag(int tag){ return userMapper.getAllMovieByTag(tag); }
+
+    public User Sel(int id){ return userMapper.sel(id); }
 }

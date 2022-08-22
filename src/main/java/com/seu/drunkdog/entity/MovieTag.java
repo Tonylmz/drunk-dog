@@ -1,11 +1,18 @@
 package com.seu.drunkdog.entity;
 
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 public class MovieTag {
     private int id;
     private int movie_id;
     private int movie_tag;
 //    private double movie_weight;
 
+    @Id
     public int getId() {
         return id;
     }

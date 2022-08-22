@@ -1,12 +1,18 @@
 package com.seu.drunkdog.entity;
 
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 
 public class MovieComment {
     private int id;
     private int movie_id;
     private String comment;
 
+    @Id
     public int getId() {
         return id;
     }

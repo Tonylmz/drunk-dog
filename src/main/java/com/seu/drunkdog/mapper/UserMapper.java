@@ -21,14 +21,17 @@ public interface UserMapper {
     List<UserTag> findAllById(@Param("user_id")int user_id);
 
     @Insert("insert into user_tag values(null, #{user_id}, #{user_tag}, #{user_weight})")
-    void saveUserTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") double user_weight);
+    void saveUserTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") int user_weight);
 
     @Select("select id from tag where category = #{category}")
     int getIdByTag(@Param("category")String category);
 
-    @Update("update user_tag set user_weight = user_weight + 0.4 where user_id = #{user_id}")
+    @Update("update user_tag set user_weight = user_weight + 1 where user_id = #{user_id}")
     void updateUserWeight(@Param("user_id") int user_id);
 
-    @Select("select * from movie where category like '%|#{tag}|%'")
+    @Select("select * from movie where category like concat('%|',#{tag},'|%')")
     List<Movie> getAllMovieByTag(@Param("tag") int tag);
+
+    @Select("select * from user_tag where user_id = #{id}")
+    User sel(@Param("id") int id);
 }

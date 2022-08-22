@@ -22,6 +22,9 @@ public class RegisterController {
     EmailService emailService;
     @Autowired
     UserService userService;
+
+    String verifyCode;
+    String name;
 //    @RequestMapping("/register")
 //    public String register(String name, String password){
 //        userService.InsertUser(name, password);
@@ -33,19 +36,19 @@ public class RegisterController {
         HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        String name = request.getParameter("name");
+        name = request.getParameter("name");
 //        String password = request.getParameter("password");
 //        User a = new User();
 //        a.setName(name);
 //        a.setPassword(password);
 //        hs.setAttribute("name",name);
         res.put("msg", "true");
-        String verifyCode = emailService.sendSimpleMail(name);
-        res.put("verifycode", verifyCode);
-        Cookie c = new Cookie("verifyCode", verifyCode);
-        c.setMaxAge(10800);
-        c.setPath("/");
-        response.addCookie(c);
+        verifyCode = emailService.sendSimpleMail(name);
+//        res.put("verifycode", verifyCode);
+//        Cookie c = new Cookie("verifyCode", verifyCode);
+//        c.setMaxAge(10800);
+//        c.setPath("/");
+//        response.addCookie(c);
 //        String code = request.getParameter("code");
 //        if(verifyCode!=code){
 //            res.put("msg", "false");
@@ -68,24 +71,33 @@ public class RegisterController {
         HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        String isOK = request.getParameter("isOK");
-        if(isOK.equals("true") ){
+        String password = request.getParameter("password");
+        String getVerifyCode = request.getParameter("verifyCode");
+        if(verifyCode.equals(getVerifyCode)){
             res.put("msg", "true");
-            String name = request.getParameter("name");
-            String password = request.getParameter("password");
             userService.InsertUser(name, password);
-            Cookie c=new Cookie("name",name);
-            c.setMaxAge(10800);
-            c.setPath("/");
-            Cookie d=new Cookie("register","true");
-            d.setMaxAge(10800);
-            d.setPath("/");
-            response.addCookie(c);
-            response.addCookie(d);
         }
         else{
             res.put("msg", "false");
         }
+//        String isOK = request.getParameter("isOK");
+//        if(isOK.equals("true") ){
+//            res.put("msg", "true");
+//            String name = request.getParameter("name");
+//            String password = request.getParameter("password");
+//            userService.InsertUser(name, password);
+//            Cookie c=new Cookie("name",name);
+//            c.setMaxAge(10800);
+//            c.setPath("/");
+//            Cookie d=new Cookie("register","true");
+//            d.setMaxAge(10800);
+//            d.setPath("/");
+//            response.addCookie(c);
+//            response.addCookie(d);
+//        }
+//        else{
+//            res.put("msg", "false");
+//        }
         response.getWriter().write(res.toString());
     }
 }

@@ -1,6 +1,11 @@
 package com.seu.drunkdog.entity;
 
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 
 public class Movie {
     private int id;
@@ -14,6 +19,7 @@ public class Movie {
     private String picture_link;
     private String release_period;
 
+    @Id
     public int getId() {
         return id;
     }

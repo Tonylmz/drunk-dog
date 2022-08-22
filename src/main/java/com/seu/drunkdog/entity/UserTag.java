@@ -1,11 +1,18 @@
 package com.seu.drunkdog.entity;
 
+import org.springframework.stereotype.Component;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 public class UserTag {
     private int id;
     private int user_id;
     private int user_tag;
-    private double user_weight;
+    private int user_weight;
 
+    @Id
     public int getId() {
         return id;
     }
@@ -30,11 +37,11 @@ public class UserTag {
         this.user_tag = user_tag;
     }
 
-    public double getUser_weight() {
+    public int getUser_weight() {
         return user_weight;
     }
 
-    public void setUser_weight(double user_weight) {
+    public void setUser_weight(int user_weight) {
         this.user_weight = user_weight;
     }
 

@@ -35,7 +35,7 @@ public class UserController {
 //        System.out.println(initialTagArray.length);
         for(int i = 0; i < initialTagArray.length; i++){
             int user_tag = userService.searchIdByTag(initialTagArray[i]);
-            userService.InsertUserTag(user_id, user_tag, 1);
+            userService.InsertUserTag(user_id, user_tag, 3);
             res.put("tag",user_tag);
         }
         response.getWriter().write(res.toString());
@@ -50,7 +50,7 @@ public class UserController {
         if(tagService.searchIdByTag(newTag) == 0){
             tagService.insertTag(newTag);
             int user_tag = userService.searchIdByTag(newTag);
-            userService.InsertUserTag(user_id, user_tag, 0.4);
+            userService.InsertUserTag(user_id, user_tag, 1);
             res.put("newTag", newTag);
         }
         else{
@@ -82,6 +82,7 @@ public class UserController {
         response.setCharacterEncoding("UTF-8");
         String tag = request.getParameter("tag");
         int category = tagService.searchIdByTag(tag);
+        System.out.println(category);
         List<Movie> allMovieByTag = userService.searchAllMovieByTag(category);
         JSONArray ja = new JSONArray();
         for (int i = 0; i < allMovieByTag.size(); i++) {
@@ -93,5 +94,7 @@ public class UserController {
         res.put("msg", ja.toString());
         response.getWriter().write(res.toString());
     }
+
+
 
 }
