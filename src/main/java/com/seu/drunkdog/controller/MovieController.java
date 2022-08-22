@@ -37,7 +37,7 @@ public class MovieController {
     }
     @RequestMapping("/showTopMovie")
     public void showTopMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs=request.getSession();
+        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
         int id = Integer.parseInt(request.getParameter("id"));
@@ -127,6 +127,21 @@ public class MovieController {
         res.put("msg", ja.toString());
         response.getWriter().write(res.toString());
     }
+
+    @RequestMapping("/showMovieBySearch")
+    public void showMovieBySearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("UTF-8");
+        String name = request.getParameter("name");
+        List<Movie> allMovieBySearch = movieService.searchMovieByNameOrDirectorOrActor(name);
+        JSONArray ja = new JSONArray();
+        for (int i = 0; i < allMovieBySearch.size(); i++) {
+            ja.add(JSONObject.fromObject(allMovieBySearch.get(i).getAll()));
+        }
+        JSONObject res = new JSONObject();
+        res.put("msg", ja.toString());
+        response.getWriter().write(res.toString());
+    }
+
 
 //    @RequestMapping("/GetMovieComment2")
 //    public void GetMovieComment2() throws Exception{

@@ -24,4 +24,7 @@ public interface MovieMapper {
 
     @Select("select movie_comment from movie_comment where movie_id = #{movie_id}")
     List<String> getMovieComment(@Param("movie_id") int movie_id);
+
+    @Select("select * from movie where name = #{name} or director = #{name} or actor = #{name}")
+    List<Movie> getMovieByNameOrDirectorOrActor(@Param("name") String name);
 }

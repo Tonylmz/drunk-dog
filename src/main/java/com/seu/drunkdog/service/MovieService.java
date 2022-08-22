@@ -31,4 +31,5 @@ public class MovieService {
     public List<String> searchMovieCommentById(int movie_id){
         return movieMapper.getMovieComment(movie_id);
     }
+    public List<Movie> searchMovieByNameOrDirectorOrActor(String name){ return movieMapper.getMovieByNameOrDirectorOrActor(name); }
 }

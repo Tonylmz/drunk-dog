@@ -1,18 +1,14 @@
 package com.seu.drunkdog.service;
 
+import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.User;
 import com.seu.drunkdog.entity.UserTag;
 import com.seu.drunkdog.mapper.UserMapper;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -39,13 +35,15 @@ public class UserService {
         userMapper.saveInfo(name, password);
     }
 
-    public void getAllById(int user_id){ userMapper.findAllById(user_id); }
+    public List<UserTag> searchAllById(int user_id){ return userMapper.findAllById(user_id); }
 
     public void InsertUserTag(int user_id, int user_tag, double user_weight){
         userMapper.saveUserTag(user_id, user_tag, user_weight);
     }
 
-    public int getIdByTag(String category){ return userMapper.searchIdByTag(category); }
+    public int searchIdByTag(String category){ return userMapper.getIdByTag(category); }
 
     public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
+
+    public List<Movie> searchAllMovieByTag(int tag){ return userMapper.getAllMovieByTag(tag); }
 }
