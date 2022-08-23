@@ -10,6 +10,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @Service
+@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
 public class UserController {
     @Autowired
     UserService userService;
@@ -36,7 +38,7 @@ public class UserController {
         for(int i = 0; i < initialTagArray.length; i++){
             int user_tag = userService.searchIdByTag(initialTagArray[i]);
             userService.InsertUserTag(user_id, user_tag, 3);
-            res.put("tag",user_tag);
+//            res.put("tag",user_tag);
         }
         response.getWriter().write(res.toString());
     }
@@ -66,11 +68,17 @@ public class UserController {
         JSONObject res = new JSONObject();
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         List<UserTag> allTagByUserId = userService.searchAllById(user_id);
+        int weightTotal = 0;
+        for(int i = 0; i < allTagByUserId.size(); i++){
+            weightTotal += allTagByUserId.get(i).getUser_weight();
+        }
         JSONArray ja = new JSONArray();
         for (int i = 0; i < allTagByUserId.size(); i++) {
             String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUser_tag());
             JSONObject temp = new JSONObject();
-            temp.put(user_tag,allTagByUserId.get(i).getUser_weight());
+            temp.put("category", user_tag);
+            temp.put("weight", (allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
+//            temp.put(user_tag,(allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
             ja.add(temp);
         }
         res.put("msg", ja.toString());

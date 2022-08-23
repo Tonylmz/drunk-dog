@@ -7,6 +7,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RestController
+@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
 public class MovieController {
     @Autowired
     MovieService movieService;
@@ -41,6 +43,7 @@ public class MovieController {
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
         int id = Integer.parseInt(request.getParameter("id"));
+//        System.out.println(id);
         Movie movie = movieService.searchTopMovie(id);
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length];

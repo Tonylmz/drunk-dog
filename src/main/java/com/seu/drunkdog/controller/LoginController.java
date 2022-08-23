@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
@@ -21,6 +23,8 @@ import java.util.UUID;
 //@RequestMapping("/user")
 @Slf4j
 @Service
+@ResponseBody
+@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
 public class LoginController {
     @Autowired
     UserService userService;
@@ -52,6 +56,7 @@ public class LoginController {
     public void login(HttpServletRequest request, HttpServletResponse response)throws Exception
     {
         HttpSession hs=request.getSession();
+
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
         String name = request.getParameter("name");
@@ -69,7 +74,7 @@ public class LoginController {
 //        }
         if(s!=null&&s.getPassword().equals(password)) {
 
-            hs.setAttribute("name",name);
+//            hs.setAttribute("name",name);
             Cookie c=new Cookie("name",name);
             c.setMaxAge(10800);
             c.setPath("/");
@@ -90,6 +95,10 @@ public class LoginController {
         }
         else {
             res.put("msg","false");
+            Cookie c=new Cookie("name",name);
+            c.setMaxAge(10800);
+            c.setPath("/");
+            response.addCookie(c);
         }
 
         response.getWriter().write(res.toString());

@@ -6,6 +6,7 @@ import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 //@RequestMapping("/user")
 @Service
+@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
 public class RegisterController {
     @Autowired
     EmailService emailService;
@@ -42,8 +44,28 @@ public class RegisterController {
 //        a.setName(name);
 //        a.setPassword(password);
 //        hs.setAttribute("name",name);
-        res.put("msg", "true");
-        verifyCode = emailService.sendSimpleMail(name);
+
+        User a = userService.LoginIn(name);
+        if(a!=null){
+            res.put("msg", "true");
+            verifyCode = emailService.sendSimpleMail(name);
+            Cookie c = new Cookie("verifyCode", verifyCode);
+            c.setMaxAge(10800);
+            c.setPath("/");
+            response.addCookie(c);
+            Cookie d=new Cookie("register1","true");
+            d.setMaxAge(10800);
+            d.setPath("/");
+            response.addCookie(c);
+            response.addCookie(d);
+        }
+        else{
+            res.put("msg", "duplicate");
+            Cookie c = new Cookie("register1", "duplicate");
+            c.setMaxAge(10800);
+            c.setPath("/");
+            response.addCookie(c);
+        }
 //        res.put("verifycode", verifyCode);
 //        Cookie c = new Cookie("verifyCode", verifyCode);
 //        c.setMaxAge(10800);
@@ -76,9 +98,17 @@ public class RegisterController {
         if(verifyCode.equals(getVerifyCode)){
             res.put("msg", "true");
             userService.InsertUser(name, password);
+            Cookie c = new Cookie("register2","true");
+            c.setMaxAge(10800);
+            c.setPath("/");
+            response.addCookie(c);
         }
         else{
             res.put("msg", "false");
+            Cookie c = new Cookie("register2", "false");
+            c.setMaxAge(10800);
+            c.setPath("/");
+            response.addCookie(c);
         }
 //        String isOK = request.getParameter("isOK");
 //        if(isOK.equals("true") ){
