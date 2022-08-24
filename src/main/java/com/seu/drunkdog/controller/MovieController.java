@@ -1,6 +1,7 @@
 package com.seu.drunkdog.controller;
 
 import com.seu.drunkdog.entity.Movie;
+import com.seu.drunkdog.entity.MovieComment;
 import com.seu.drunkdog.service.MovieService;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
@@ -76,7 +77,7 @@ public class MovieController {
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length - 1];
-        List<String> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
+        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
         for (int i = 0; i < min(allMovieCommentById.size(),5); i++) {
             ja.add(allMovieCommentById.get(i));
         }
@@ -120,7 +121,7 @@ public class MovieController {
 //                userService.updateUserWeightByIdAndTag(user_id, Integer.parseInt(intCateGory[i]), movie_score - 3);
 //            }
 //        }
-        List<String> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
+        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
         int size = allMovieCommentById.size();
 //        int page = Integer.parseInt(request.getParameter("page"));
 //        int pageSize = 10;
@@ -146,7 +147,7 @@ public class MovieController {
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
-        movieService.insertMovieScore(movie_id, movie_score);
+//        movieService.insertMovieScore(movie_id, movie_score);
         for(int i = 1;i < intCateGory.length; i++){
             if(userService.ifNullFindByIdAndTag(user_id, Integer.parseInt(intCateGory[i])) == null){
                 userService.InsertUserTag(user_id, Integer.parseInt(intCateGory[i]), movie_score - 3);
@@ -162,6 +163,16 @@ public class MovieController {
         //推荐
     }
 
+    @RequestMapping("/clickLike")
+    public void clickLike(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setCharacterEncoding("UTF-8");
+        int id = Integer.parseInt(request.getParameter("id"));
+        movieService.addMovieLike(id);
+        JSONObject res = new JSONObject();
+        res.put("code", 0);
+        res.put("msg", "true");
+        response.getWriter().write(res.toString());
+    }
 
     @RequestMapping("/showMovieBySearch")
     public void showMovieBySearch(HttpServletRequest request, HttpServletResponse response) throws Exception {

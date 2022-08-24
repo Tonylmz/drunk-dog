@@ -90,6 +90,7 @@ public class LoginController {
 //            }
             response.addCookie(c);
             response.addCookie(d);
+            res.put("user_id", s.getId());
             res.put("msg","true");
             res.put("code", 0);
         }

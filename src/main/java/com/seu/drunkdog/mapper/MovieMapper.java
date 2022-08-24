@@ -1,6 +1,7 @@
 package com.seu.drunkdog.mapper;
 
 import com.seu.drunkdog.entity.Movie;
+import com.seu.drunkdog.entity.MovieComment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -20,10 +21,12 @@ public interface MovieMapper {
 
     @Insert("insert into movie_comment values(#{movie_id}, #{movie_comment},null,null)")
     void saveMovieComment(@Param("movie_id") int movie_id, @Param("movie_comment") String movie_comment);
-    @Update("update movie_comment set score = #{score} where movie_id = #{movie_id}")
-    void saveMovieScore(@Param("movie_id") int movie_id, @Param("score") int score);
-    @Select("select movie_comment from movie_comment where movie_id = #{movie_id}")
-    List<String> getMovieComment(@Param("movie_id") int movie_id);
+//    @Update("update movie_comment set score = #{score} where movie_id = #{movie_id}")
+//    void saveMovieScore(@Param("movie_id") int movie_id, @Param("score") int score);
+    @Update("update movie_comment set score = score + 1 where id = #{id}")
+    void saveClickLike(@Param("id") int id);
+    @Select("select * from movie_comment where movie_id = #{movie_id}")
+    List<MovieComment> getMovieComment(@Param("movie_id") int movie_id);
 
     @Select("select * from movie where name like concat('%',#{name},'%') ")
     List<Movie> getMovieByName(@Param("name") String name);

@@ -1,24 +1,20 @@
 package com.seu.drunkdog.entity;
 
-import net.sf.json.JSONObject;
-import org.springframework.stereotype.Component;
-
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 
 public class MovieComment {
     private int id;
     private int movie_id;
-    private String comment;
+    private String movie_comment;
 
-    private String score;
+    private int score;
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -39,12 +35,12 @@ public class MovieComment {
         this.movie_id = movie_id;
     }
 
-    public String getComment() {
-        return comment;
+    public String getMovie_comment() {
+        return movie_comment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setMovie_comment(String movie_comment) {
+        this.movie_comment = movie_comment;
     }
 
 //    public String getAll(){

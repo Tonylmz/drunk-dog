@@ -1,6 +1,7 @@
 package com.seu.drunkdog.service;
 
 import com.seu.drunkdog.entity.Movie;
+import com.seu.drunkdog.entity.MovieComment;
 import com.seu.drunkdog.mapper.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,10 +32,13 @@ public class MovieService {
     public void insertMovieComment(int movie_id, String movie_comment){
         movieMapper.saveMovieComment(movie_id, movie_comment);
     }
-    public void insertMovieScore(int movie_id, int score){
-        movieMapper.saveMovieScore(movie_id, score);
+//    public void insertMovieScore(int movie_id, int score){
+//        movieMapper.saveMovieScore(movie_id, score);
+//    }
+    public void addMovieLike(int id){
+        movieMapper.saveClickLike(id);
     }
-    public List<String> searchMovieCommentById(int movie_id){
+    public List<MovieComment> searchMovieCommentById(int movie_id){
         return movieMapper.getMovieComment(movie_id);
     }
     public List<Movie> searchMovieByName(String name){ return movieMapper.getMovieByName(name); }
