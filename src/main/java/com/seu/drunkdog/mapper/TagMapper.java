@@ -13,4 +13,5 @@ public interface TagMapper {
     int getIdByCategory(@Param("category")String category);
     @Select("select category from tag where id = #{id}")
     String getCategoryById(@Param("id") int id);
+
 }

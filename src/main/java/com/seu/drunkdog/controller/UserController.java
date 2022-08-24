@@ -34,33 +34,35 @@ public class UserController {
         JSONObject res = new JSONObject();
         String[] initialTagArray = request.getParameterValues("initialTagArray");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
-//        System.out.println(initialTagArray.length);
+        res.put("code", 0);
+        res.put("msg", "true");
         for(int i = 0; i < initialTagArray.length; i++){
             int user_tag = userService.searchIdByTag(initialTagArray[i]);
-            userService.InsertUserTag(user_id, user_tag, 3);
-//            res.put("tag",user_tag);
+            userService.InsertUserTag(user_id, user_tag, 5);
         }
         response.getWriter().write(res.toString());
     }
-    @RequestMapping("/clickToSaveTag")
-    public void clickToSaveTag(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
-        response.setCharacterEncoding("UTF-8");
-        JSONObject res = new JSONObject();
-        String newTag = request.getParameter("newTag");
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        if(tagService.searchIdByTag(newTag) == 0){
-            tagService.insertTag(newTag);
-            int user_tag = userService.searchIdByTag(newTag);
-            userService.InsertUserTag(user_id, user_tag, 1);
-            res.put("newTag", newTag);
-        }
-        else{
-            userService.updateUserWeight(user_id);
-            res.put("oldTag", newTag);
-        }
-        response.getWriter().write(res.toString());
-    }
+//    @RequestMapping("/clickToSaveTag")
+//    public void clickToSaveTag(HttpServletRequest request, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
+//        response.setCharacterEncoding("UTF-8");
+//        JSONObject res = new JSONObject();
+//        String newTag = request.getParameter("newTag");
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
+////        if(tagService.searchIdByTag(newTag) == 0){
+////            tagService.insertTag(newTag);
+////            int user_tag = userService.searchIdByTag(newTag);
+////            userService.InsertUserTag(user_id, user_tag, 1);
+////            res.put("newTag", newTag);
+////        }
+////        else{
+////            userService.updateUserWeight(user_id);
+////            res.put("oldTag", newTag);
+////        }
+//        res.put("code", 0);
+//        res.put("msg", "true");
+//        response.getWriter().write(res.toString());
+//    }
     @RequestMapping("/drawUserTagCake")
     public void drawUserTagCake(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession hs = request.getSession();
@@ -68,20 +70,27 @@ public class UserController {
         JSONObject res = new JSONObject();
         int user_id = Integer.parseInt(request.getParameter("user_id"));
         List<UserTag> allTagByUserId = userService.searchAllById(user_id);
-        int weightTotal = 0;
-        for(int i = 0; i < allTagByUserId.size(); i++){
-            weightTotal += allTagByUserId.get(i).getUser_weight();
+        if(allTagByUserId.size() == 0){
+            int weightTotal = 0;
+            for(int i = 0; i < allTagByUserId.size(); i++){
+                weightTotal += allTagByUserId.get(i).getUser_weight();
+            }
+            JSONArray ja = new JSONArray();
+            for (int i = 0; i < allTagByUserId.size(); i++) {
+                String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUser_tag());
+                JSONObject temp = new JSONObject();
+                temp.put("category", user_tag);
+                temp.put("weight", (allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
+                ja.add(temp);
+            }
+            res.put("data", ja.toString());
+            res.put("code", 0);
+            res.put("msg", "true");
         }
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < allTagByUserId.size(); i++) {
-            String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUser_tag());
-            JSONObject temp = new JSONObject();
-            temp.put("category", user_tag);
-            temp.put("weight", (allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
-//            temp.put(user_tag,(allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
-            ja.add(temp);
+        else{
+            res.put("code", 1);
+            res.put("msg", "false");
         }
-        res.put("msg", ja.toString());
         response.getWriter().write(res.toString());
     }
     @RequestMapping("/categoryMovie")
@@ -89,20 +98,36 @@ public class UserController {
         HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         String tag = request.getParameter("tag");
+        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        JSONObject res = new JSONObject();
+        int user_tag = userService.searchIdByTag(tag);
+        if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
+            userService.InsertUserTag(user_id, user_tag, 3);
+        }
+        else{
+            userService.updateUserWeightByIdAndTag(user_id, user_tag, 3);
+        }
+//        if(tagService.searchIdByTag(tag) == 0){
+//            tagService.insertTag(tag);
+//            int user_tag = userService.searchIdByTag(tag);
+//            userService.InsertUserTag(user_id, user_tag, 2);
+////            res.put("newTag", tag);
+//
+//        }
+//        else{
+//            userService.updateUserWeight(user_id);
+//        }
         int category = tagService.searchIdByTag(tag);
-        System.out.println(category);
+//        System.out.println(category);
         List<Movie> allMovieByTag = userService.searchAllMovieByTag(category);
         JSONArray ja = new JSONArray();
         for (int i = 0; i < allMovieByTag.size(); i++) {
-//            JSONObject temp = new JSONObject();
-            ja.add(JSONObject.fromObject(allMovieByTag.get(i).getAll()));
-//            ja.add(temp);
+            ja.add(JSONObject.fromObject(allMovieByTag.get(i)));
         }
-        JSONObject res = new JSONObject();
-        res.put("msg", ja.toString());
+
+        res.put("data", ja.toString());
+        res.put("code", 0);
+        res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
-
-
-
 }

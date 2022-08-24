@@ -91,10 +91,11 @@ public class LoginController {
             response.addCookie(c);
             response.addCookie(d);
             res.put("msg","true");
-
+            res.put("code", 0);
         }
         else {
             res.put("msg","false");
+            res.put("code", 1);
             Cookie c=new Cookie("name",name);
             c.setMaxAge(10800);
             c.setPath("/");
@@ -112,7 +113,7 @@ public class LoginController {
 //        int w = 250, h = 80;
 //        String verifyCode = VerifyCode.generateVerifyCode(5);
 //        File file = new File(dir, UUID.randomUUID() + ".jpg");
-//        String path="http://119.3.176.243/"+file.getName();
+//        String path="http://localhost:8080/"+file.getName();
 //        hs.setAttribute("verifycode",verifyCode);
 //        VerifyCode.outputImage(w, h, file,verifyCode);
 //        System.out.println(hs.getId());

@@ -12,6 +12,16 @@ public class MovieComment {
     private int movie_id;
     private String comment;
 
+    private String score;
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
     @Id
     public int getId() {
         return id;
@@ -37,11 +47,11 @@ public class MovieComment {
         this.comment = comment;
     }
 
-    public String getAll(){
-        JSONObject js=new JSONObject();
-        js.put("id",id);
-        js.put("movie_id",movie_id);
-        js.put("comment",comment);
-        return js.toString();
-    }
+//    public String getAll(){
+//        JSONObject js=new JSONObject();
+//        js.put("id",id);
+//        js.put("movie_id",movie_id);
+//        js.put("comment",comment);
+//        return js.toString();
+//    }
 }

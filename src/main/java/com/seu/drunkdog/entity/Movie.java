@@ -1,23 +1,69 @@
 package com.seu.drunkdog.entity;
 
 import net.sf.json.JSONObject;
-import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 
 
 public class Movie {
     private int id;
+    private int movie_id;
+    private int year;
+
+    public int getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(int movie_id) {
+        this.movie_id = movie_id;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     private String name;
-    private String introduction;
     private String director;
     private String actor;
 
     private String category;
     private double score;
-    private String picture_link;
+    private String cover;
     private String release_period;
+
+    private String mins;
+
+
+    private String regions;
+    private String storyline;
+
+    public String getMins() {
+        return mins;
+    }
+
+    public void setMins(String mins) {
+        this.mins = mins;
+    }
+
+    public String getRegions() {
+        return regions;
+    }
+
+    public void setRegions(String regions) {
+        this.regions = regions;
+    }
+
+    public String getStoryline() {
+        return storyline;
+    }
+
+    public void setStoryline(String storyline) {
+        this.storyline = storyline;
+    }
 
     @Id
     public int getId() {
@@ -36,13 +82,6 @@ public class Movie {
         this.name = name;
     }
 
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
 
     public String getDirector() {
         return director;
@@ -76,12 +115,12 @@ public class Movie {
         this.score = score;
     }
 
-    public String getPicture_link() {
-        return picture_link;
+    public String getCover() {
+        return cover;
     }
 
-    public void setPicture_link(String picture_link) {
-        this.picture_link = picture_link;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public String getRelease_period() {
@@ -92,16 +131,18 @@ public class Movie {
         this.release_period = release_period;
     }
 
-    public String getAll(){
-        JSONObject js=new JSONObject();
-        js.put("id",id);
-        js.put("name",name);
-        js.put("introduction",introduction);
-        js.put("director",director);js.put("actor",actor);
-        js.put("category",category);
-        js.put("scorer",score);
-        js.put("picture_link",picture_link);
-        js.put("release_period",release_period);
-        return js.toString();
-    }
+//    public String getAll(){
+//        JSONObject js=new JSONObject();
+//        js.put("id",id);
+//        js.put("name",name);
+//        js.put("introduction",introduction);
+//        js.put("director",director);js.put("actor",actor);
+//        js.put("category",category);
+//        js.put("scorer",score);
+//        js.put("cover", cover);
+//        js.put("release_period",release_period);
+//        js.put("mins", mins);
+//        js.put("regions", regions);
+//        return js.toString();
+//    }
 }

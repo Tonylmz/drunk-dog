@@ -16,8 +16,11 @@ public class MovieService {
     public void insertMovie(Movie movie){
         movieMapper.saveMovie(movie);
     }
-    public Movie searchMovie(int id){
-        return movieMapper.getMovie(id);
+    public Movie searchMovie(int movie_id){
+        return movieMapper.getMovie(movie_id);
+    }
+    public Movie searchAugustMovie(int movie_id){
+        return movieMapper.getAugustMovie(movie_id);
     }
     public Movie searchTopMovie(int id){
         return movieMapper.getTopMovie(id);
@@ -28,8 +31,23 @@ public class MovieService {
     public void insertMovieComment(int movie_id, String movie_comment){
         movieMapper.saveMovieComment(movie_id, movie_comment);
     }
+    public void insertMovieScore(int movie_id, int score){
+        movieMapper.saveMovieScore(movie_id, score);
+    }
     public List<String> searchMovieCommentById(int movie_id){
         return movieMapper.getMovieComment(movie_id);
     }
-    public List<Movie> searchMovieByNameOrDirectorOrActor(String name){ return movieMapper.getMovieByNameOrDirectorOrActor(name); }
+    public List<Movie> searchMovieByName(String name){ return movieMapper.getMovieByName(name); }
+    public List<Movie> searchMovieByDirectorOrActor(String name){ return movieMapper.getMovieByDirectorOrActor(name); }
+    public List<Movie> getAllAugustMovie(){ return movieMapper.movieAugust(); }
+    public int numOfAmericanMovie(){ return movieMapper.numberOfAmericanMovie();}
+    public List<Movie> getMovieAmerica(){ return movieMapper.movieAmerica(); }
+    public int numOfChineseMovie(){ return movieMapper.numberOfChineseMovie();}
+    public List<Movie> getMovieChina(){ return movieMapper.movieChina(); }
+    public int numOfEnglishMovie(){ return movieMapper.numberOfEnglishMovie();}
+    public List<Movie> getMovieEngland(){ return movieMapper.movieEngland(); }
+    public int numOfFrenchMovie(){ return movieMapper.numberOfFrenchMovie();}
+    public List<Movie> getMovieFrance(){ return movieMapper.movieFrance(); }
+    public int numOfGermanMovie(){ return movieMapper.numberOfGermanMovie();}
+    public List<Movie> getMovieGermany(){ return movieMapper.movieGermany(); }
 }

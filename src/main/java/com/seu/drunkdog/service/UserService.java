@@ -43,9 +43,13 @@ public class UserService {
 
     public int searchIdByTag(String category){ return userMapper.getIdByTag(category); }
 
-    public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
+//    public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
 
     public List<Movie> searchAllMovieByTag(int tag){ return userMapper.getAllMovieByTag(tag); }
 
     public User Sel(int id){ return userMapper.sel(id); }
+
+    public UserTag ifNullFindByIdAndTag(int user_id, int user_tag){ return userMapper.findByIdAndTag(user_id, user_tag); }
+
+    public void updateUserWeightByIdAndTag(int user_id, int user_tag, int user_weight){ userMapper.updateUserWeightByIdAndTag(user_id, user_tag, user_weight);}
 }
