@@ -5,7 +5,27 @@ public class MovieComment {
     private int id;
     private int movieId;
     private String movieComment;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     private int score;
+
+    private int userId;
+    private int pageNo;
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
 
     public int getScore() {
         return score;

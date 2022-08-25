@@ -24,10 +24,10 @@ public interface UserMapper{
     @Select("select * from user_tag where user_id = #{user_id} and user_tag = #{user_tag}")
     UserTag findByIdAndTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag);
     @Update("update user_tag set user_weight = greatest(0, user_weight + #{user_weight}) where user_id = #{user_id} and user_tag = #{user_tag}")
-    void updateUserWeightByIdAndTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") int user_weight);
+    void updateUserWeightByIdAndTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") double user_weight);
 
     @Insert("insert into user_tag values(null, #{user_id}, #{user_tag}, #{user_weight})")
-    void saveUserTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") int user_weight);
+    void saveUserTag(@Param("user_id") int user_id, @Param("user_tag") int user_tag, @Param("user_weight") double user_weight);
 
     @Select("select id from tag where category = #{category}")
     int getIdByTag(@Param("category")String category);

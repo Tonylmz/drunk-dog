@@ -5,6 +5,8 @@ package com.seu.drunkdog.entity;
 
 public class Movie {
     private int id;
+
+
     private int movieId;
     private String year;
     private String name;

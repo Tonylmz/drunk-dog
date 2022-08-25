@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
+import com.seu.drunkdog.entity.Name;
 import com.seu.drunkdog.service.MovieService;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static java.lang.Math.min;
@@ -31,16 +31,16 @@ public class MovieController {
     @Autowired
     UserService userService;
     @RequestMapping("/getTopMovie")
-    public void getTopMovie(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession hs=request.getSession();
+    public void getTopMovie(@RequestBody int pageNo, HttpServletResponse response) throws Exception {
+//        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
 //        List<Movie> allMovie = movieService.searchAllTopMovie();
 //        JSONArray ja = new JSONArray();
 //        for (int i = 0; i < allMovie.size(); i++) {
 //            ja.add(JSONObject.fromObject(allMovie.get(i)));
 //        }
-        response.setCharacterEncoding("UTF-8");
-        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+//        response.setCharacterEncoding("UTF-8");
+//        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
         Page<Movie> page = new Page<>(pageNo,10);
         IPage<Movie> iPage = movieService.searchAllTopMovie(page);
         JSONObject res = new JSONObject();
@@ -53,11 +53,11 @@ public class MovieController {
 
     }
     @RequestMapping("/showTopMovie")
-    public void showTopMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
+    public void showTopMovie(@RequestBody int id, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
-        int id = Integer.parseInt(request.getParameter("id"));
+//        int id = Integer.parseInt(request.getParameter("id"));
         Movie movie = movieService.searchTopMovie(id);
 //        String[] intCateGory = movie.getCategory().split("\\|");
 //        String[] stringCategory = new String[intCateGory.length - 1];
@@ -76,11 +76,11 @@ public class MovieController {
 
     }
     @RequestMapping("/showMovie")
-    public void showMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs=request.getSession();
+    public void showMovie(@RequestBody int movie_id, HttpServletResponse response) throws Exception{
+//        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length - 1];
@@ -102,10 +102,12 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
     @RequestMapping("/movieCommentByUser")
-    public void movieCommentByUser(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void movieCommentByUser(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
-        String movie_comment = request.getParameter("movie_comment");
+        int movie_id = movieComment.getMovieId();
+        String movie_comment = movieComment.getMovieComment();
+//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+//        String movie_comment = request.getParameter("movie_comment");
         movieService.insertMovieComment(movie_id, movie_comment);
         JSONObject res = new JSONObject();
         res.put("code", 0);
@@ -113,9 +115,11 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
     @RequestMapping("/getMovieComment")
-    public void getMovieComment(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void getMovieComment(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+        int movie_id = movieComment.getMovieId();
+        int pageNo = movieComment.getPageNo();
+//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
 //        int movie_score = Integer.parseInt(request.getParameter("movie_score"));
 //        int user_id = Integer.parseInt(request.getParameter("user_id"));
         Movie movie = movieService.searchMovie(movie_id);
@@ -139,7 +143,7 @@ public class MovieController {
 //        JSONObject jo1 = new JSONObject();
 //        jo1.put("size", size);
 //        ja.add(jo1);
-        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+//        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
         Page<MovieComment> page = new Page<>(pageNo, 10);
         IPage<MovieComment> iPage = movieService.searchMovieCommentByIdAndPage(movie_id, page);
         JSONObject res = new JSONObject();
@@ -151,11 +155,14 @@ public class MovieController {
     }
 
     @RequestMapping("/getUserScore")
-    public void getUserScore(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void getUserScore(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
-        int movie_score = Integer.parseInt(request.getParameter("movie_score"));
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        int movie_id = movieComment.getMovieId();
+        double movie_score = movieComment.getScore();
+        int user_id = movieComment.getUserId();
+//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+//        int movie_score = Integer.parseInt(request.getParameter("movie_score"));
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
 //        movieService.insertMovieScore(movie_id, movie_score);
@@ -175,9 +182,9 @@ public class MovieController {
     }
 
     @RequestMapping("/clickLike")
-    public void clickLike(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void clickLike(@RequestBody int id, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
-        int id = Integer.parseInt(request.getParameter("id"));
+//        int id = Integer.parseInt(request.getParameter("id"));
         movieService.addMovieLike(id);
         JSONObject res = new JSONObject();
         res.put("code", 0);
@@ -186,12 +193,14 @@ public class MovieController {
     }
 
     @RequestMapping("/showMovieBySearch")
-    public void showMovieBySearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void showMovieBySearch(@RequestBody Name search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
 
         //此处需要python函数分词
-        String name = request.getParameter("name");
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        String name = search.getName();
+        int user_id = search.getUserId();
+//        String name = request.getParameter("name");
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
         List<Movie> allMovieBySearchName = movieService.searchMovieByName(name);
         JSONObject res = new JSONObject();
         JSONArray ja = new JSONArray();
@@ -271,11 +280,11 @@ public class MovieController {
     }
 
     @PostMapping("/showAugustMovieDetail")
-    public void showAugustMovieDetail(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void showAugustMovieDetail(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
-        Movie movie = movieService.searchAugustMovie(movie_id);
+//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+        Movie movie = movieService.searchAugustMovie(m.getMovieId());
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length - 1];
         for(int i = 1;i < intCateGory.length; i++){

@@ -40,7 +40,7 @@ public class UserService {
 
     public List<UserTag> searchAllById(int user_id){ return userMapper.findAllById(user_id); }
 
-    public void InsertUserTag(int user_id, int user_tag, int user_weight){
+    public void InsertUserTag(int user_id, int user_tag, double user_weight){
         userMapper.saveUserTag(user_id, user_tag, user_weight);
     }
 
@@ -54,5 +54,5 @@ public class UserService {
 
     public UserTag ifNullFindByIdAndTag(int user_id, int user_tag){ return userMapper.findByIdAndTag(user_id, user_tag); }
 
-    public void updateUserWeightByIdAndTag(int user_id, int user_tag, int user_weight){ userMapper.updateUserWeightByIdAndTag(user_id, user_tag, user_weight);}
+    public void updateUserWeightByIdAndTag(int user_id, int user_tag, double user_weight){ userMapper.updateUserWeightByIdAndTag(user_id, user_tag, user_weight);}
 }
