@@ -1,12 +1,14 @@
 package com.seu.drunkdog.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 @Mapper
-public interface MovieMapper {
+public interface MovieMapper{
     @Select("select * from movie_top")
     List<Movie> findAll();
     @Insert("insert into movie values(null, #{movie_id},#{name},#{actor},#{cover},#{director},#{score},#{category},#{mins},#{regions},#{release_period}")
@@ -54,6 +56,7 @@ public interface MovieMapper {
     List<Movie> movieGermany();
     @Select("select count(*) from movie_top where country like '%德国%'")
     int numberOfGermanMovie();
-
+    @Select("select * from movie")
+    IPage<Movie> selectMovieByPage(Page<Movie> page);
 
 }

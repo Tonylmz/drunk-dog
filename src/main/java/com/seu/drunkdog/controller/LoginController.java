@@ -2,7 +2,8 @@ package com.seu.drunkdog.controller;
 
 import com.seu.drunkdog.entity.User;
 import com.seu.drunkdog.service.UserService;
-import com.seu.drunkdog.tool.VerifyCode;
+import com.seu.drunkdog.tool.createToken;
+import com.seu.drunkdog.tool.testToken;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.UUID;
 
 @RestController
 //@RequestMapping("/user")
@@ -28,6 +27,10 @@ import java.util.UUID;
 public class LoginController {
     @Autowired
     UserService userService;
+    @Autowired
+    createToken tokenService;
+    @Autowired
+    testToken tokenService2;
 //    @Autowired
 //    VerifyCode verifyCode;
 //    @RequestMapping("/login")
@@ -81,6 +84,13 @@ public class LoginController {
             Cookie d=new Cookie("islogin","true");
             d.setMaxAge(10800);
             d.setPath("/");
+            String token = tokenService.getToken(s);
+            res.put("token", token);
+//            Claims claims = Jwts.parser()
+//                    .setSigningKey("my-123")
+//                    .parseClaimsJws(token)
+//                    .getBody();
+
 //            if(name.equals("admin@qq.com"))
 //            {
 //                Cookie f=new Cookie("service","true");
@@ -90,6 +100,7 @@ public class LoginController {
 //            }
             response.addCookie(c);
             response.addCookie(d);
+
             res.put("user_id", s.getId());
             res.put("msg","true");
             res.put("code", 0);
@@ -105,6 +116,16 @@ public class LoginController {
 
         response.getWriter().write(res.toString());
     }
+    @RequestMapping("/checkToken")
+    public Object checkToken(HttpServletRequest request, HttpServletResponse response)throws Exception{
+        String token = request.getParameter("token");
+//        String token = request.getHeader("token");
+        return tokenService2.tokenSign(token);
+
+//        return tokenService.checkToken(token);
+//        return tokenService2.tokenSign(token);
+    }
+
 
 //    @RequestMapping("/getverifycode")
 //    public void generatecode(HttpServletRequest request, HttpServletResponse response)throws Exception

@@ -30,6 +30,9 @@ public class UserService {
     public User LoginIn(String name){
         return userMapper.getInfo(name);
     }
+    public User searchUserById(int id){
+        return userMapper.getInfoById(id);
+    }
 
     public void InsertUser(String name, String password){
         userMapper.saveInfo(name, password);

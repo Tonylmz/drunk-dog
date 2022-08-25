@@ -2,6 +2,8 @@ package com.seu.drunkdog.entity;
 
 //import net.sf.json.JSONObject;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 import javax.persistence.Id;
 
 

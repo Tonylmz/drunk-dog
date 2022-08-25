@@ -17,6 +17,8 @@ public interface UserMapper{
     @Select("select * from user where name = #{name}")
     User getInfo(@Param("name") String name);
 
+    @Select("select * from user where id = #{id}")
+    User getInfoById(@Param("id") int id);
     @Select("select * from user_tag where user_id = #{user_id}")
     List<UserTag> findAllById(@Param("user_id")int user_id);
     @Select("select * from user_tag where user_id = #{user_id} and user_tag = #{user_tag}")

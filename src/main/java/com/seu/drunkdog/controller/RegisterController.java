@@ -27,6 +27,7 @@ public class RegisterController {
 
     String verifyCode;
     String name;
+
 //    @RequestMapping("/register")
 //    public String register(String name, String password){
 //        userService.InsertUser(name, password);
@@ -57,6 +58,7 @@ public class RegisterController {
             Cookie d=new Cookie("register1","true");
             d.setMaxAge(10800);
             d.setPath("/");
+
             response.addCookie(c);
             response.addCookie(d);
         }

@@ -1,5 +1,7 @@
 package com.seu.drunkdog.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
 import com.seu.drunkdog.mapper.MovieMapper;
@@ -54,4 +56,6 @@ public class MovieService {
     public List<Movie> getMovieFrance(){ return movieMapper.movieFrance(); }
     public int numOfGermanMovie(){ return movieMapper.numberOfGermanMovie();}
     public List<Movie> getMovieGermany(){ return movieMapper.movieGermany(); }
+
+    public IPage<Movie> getMovieByPage(Page<Movie> page){ return movieMapper.selectMovieByPage(page); }
 }
