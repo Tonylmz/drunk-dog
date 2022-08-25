@@ -2,22 +2,31 @@ package com.seu.drunkdog.entity;
 
 //import net.sf.json.JSONObject;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import javax.persistence.Id;
-
 
 public class Movie {
     private int id;
-    private int movie_id;
+    private int movieId;
     private String year;
+    private String name;
+    private String director;
+    private String actor;
 
-    public int getMovie_id() {
-        return movie_id;
+    private String category;
+    private double score;
+    private String cover;
+    private String releasePeriod;
+    private String mins;
+    private String country;
+    private String pictureLink;
+    private String regions;
+    private String storyline;
+
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setMovie_id(int movie_id) {
-        this.movie_id = movie_id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public String getYear() {
@@ -28,18 +37,7 @@ public class Movie {
         this.year = year;
     }
 
-    private String name;
-    private String director;
-    private String actor;
 
-    private String category;
-    private double score;
-    private String cover;
-    private String release_period;
-
-    private String mins;
-
-    private String country;
 
     public String getCountry() {
         return country;
@@ -49,17 +47,15 @@ public class Movie {
         this.country = country;
     }
 
-    public String getPicture_link() {
-        return picture_link;
+    public String getPictureLink() {
+        return pictureLink;
     }
 
-    public void setPicture_link(String picture_link) {
-        this.picture_link = picture_link;
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
     }
 
-    private String picture_link;
-    private String regions;
-    private String storyline;
+
 
     public String getMins() {
         return mins;
@@ -85,7 +81,7 @@ public class Movie {
         this.storyline = storyline;
     }
 
-    @Id
+
     public int getId() {
         return id;
     }
@@ -143,12 +139,12 @@ public class Movie {
         this.cover = cover;
     }
 
-    public String getRelease_period() {
-        return release_period;
+    public String getReleasePeriod() {
+        return releasePeriod;
     }
 
-    public void setRelease_period(String release_period) {
-        this.release_period = release_period;
+    public void setReleasePeriod(String releasePeriod) {
+        this.releasePeriod = releasePeriod;
     }
 
 //    public String getAll(){

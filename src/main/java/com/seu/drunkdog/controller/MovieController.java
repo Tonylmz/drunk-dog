@@ -45,6 +45,7 @@ public class MovieController {
         IPage<Movie> iPage = movieService.searchAllTopMovie(page);
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
+//        System.out.println(iPage.getRecords().get(0).getPictureLink());
         res.put("data", iPage);
         res.put("msg", "true");
         res.put("code", 0);
@@ -262,6 +263,7 @@ public class MovieController {
             ja.add(JSONObject.fromObject(allAugustMovie.get(i)));
         }
         JSONObject res = new JSONObject();
+        System.out.println(ja.get(0).getClass());
         res.put("data", ja.toString());
         res.put("code", 0);
         res.put("msg", "true");

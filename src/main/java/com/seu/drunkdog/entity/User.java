@@ -1,8 +1,5 @@
 package com.seu.drunkdog.entity;
 
-import org.springframework.stereotype.Component;
-
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.List;
 
@@ -54,7 +51,7 @@ public class User {
             weight_vector[i] = 0;
         }
         for (int i=0; i < weightList.size(); i++){
-            weight_vector[weightList.get(i).getUser_tag()] = weightList.get(i).getUser_weight();
+            weight_vector[weightList.get(i).getUserTag()] = weightList.get(i).getUserWeight();
         }
         return weight_vector;
     }

@@ -2,10 +2,8 @@ package com.seu.drunkdog.controller;
 
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.UserTag;
-import com.seu.drunkdog.mapper.TagMapper;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +71,14 @@ public class UserController {
         if(allTagByUserId.size() == 0){
             int weightTotal = 0;
             for(int i = 0; i < allTagByUserId.size(); i++){
-                weightTotal += allTagByUserId.get(i).getUser_weight();
+                weightTotal += allTagByUserId.get(i).getUserWeight();
             }
             JSONArray ja = new JSONArray();
             for (int i = 0; i < allTagByUserId.size(); i++) {
-                String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUser_tag());
+                String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUserTag());
                 JSONObject temp = new JSONObject();
                 temp.put("category", user_tag);
-                temp.put("weight", (allTagByUserId.get(i).getUser_weight() + 0.0)/weightTotal);
+                temp.put("weight", (allTagByUserId.get(i).getUserWeight() + 0.0)/weightTotal);
                 ja.add(temp);
             }
             res.put("data", ja.toString());

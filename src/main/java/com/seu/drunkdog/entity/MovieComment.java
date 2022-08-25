@@ -1,13 +1,10 @@
 package com.seu.drunkdog.entity;
 
-import javax.persistence.Id;
-
 
 public class MovieComment {
     private int id;
-    private int movie_id;
-    private String movie_comment;
-
+    private int movieId;
+    private String movieComment;
     private int score;
 
     public int getScore() {
@@ -18,7 +15,7 @@ public class MovieComment {
         this.score = score;
     }
 
-    @Id
+
     public int getId() {
         return id;
     }
@@ -27,20 +24,20 @@ public class MovieComment {
         this.id = id;
     }
 
-    public int getMovie_id() {
-        return movie_id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setMovie_id(int movie_id) {
-        this.movie_id = movie_id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public String getMovie_comment() {
-        return movie_comment;
+    public String getMovieComment() {
+        return movieComment;
     }
 
-    public void setMovie_comment(String movie_comment) {
-        this.movie_comment = movie_comment;
+    public void setMovieComment(String movieComment) {
+        this.movieComment = movieComment;
     }
 
 //    public String getAll(){
