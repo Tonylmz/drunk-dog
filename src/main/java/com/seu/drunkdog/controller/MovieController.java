@@ -1,5 +1,7 @@
 package com.seu.drunkdog.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
 import com.seu.drunkdog.service.MovieService;
@@ -8,12 +10,8 @@ import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,13 +34,18 @@ public class MovieController {
     public void getTopMovie(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
-        List<Movie> allMovie = movieService.searchAllMovie();
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < allMovie.size(); i++) {
-            ja.add(JSONObject.fromObject(allMovie.get(i)));
-        }
+//        List<Movie> allMovie = movieService.searchAllTopMovie();
+//        JSONArray ja = new JSONArray();
+//        for (int i = 0; i < allMovie.size(); i++) {
+//            ja.add(JSONObject.fromObject(allMovie.get(i)));
+//        }
+        response.setCharacterEncoding("UTF-8");
+        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+        Page<Movie> page = new Page<>(pageNo,10);
+        IPage<Movie> iPage = movieService.searchAllTopMovie(page);
         JSONObject res = new JSONObject();
-        res.put("data", ja.toString());
+//        res.put("data", ja.toString());
+        res.put("data", iPage);
         res.put("msg", "true");
         res.put("code", 0);
         response.getWriter().write(res.toString());
@@ -124,19 +127,23 @@ public class MovieController {
 //                userService.updateUserWeightByIdAndTag(user_id, Integer.parseInt(intCateGory[i]), movie_score - 3);
 //            }
 //        }
-        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
-        int size = allMovieCommentById.size();
-//        int page = Integer.parseInt(request.getParameter("page"));
-//        int pageSize = 10;
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < allMovieCommentById.size(); i++) {
-            ja.add(allMovieCommentById.get(i));
-        }
-        JSONObject jo1 = new JSONObject();
-        jo1.put("size", size);
-        ja.add(jo1);
+//        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
+//        int size = allMovieCommentById.size();
+////        int page = Integer.parseInt(request.getParameter("page"));
+////        int pageSize = 10;
+//        JSONArray ja = new JSONArray();
+//        for (int i = 0; i < allMovieCommentById.size(); i++) {
+//            ja.add(allMovieCommentById.get(i));
+//        }
+//        JSONObject jo1 = new JSONObject();
+//        jo1.put("size", size);
+//        ja.add(jo1);
+        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
+        Page<MovieComment> page = new Page<>(pageNo, 10);
+        IPage<MovieComment> iPage = movieService.searchMovieCommentByIdAndPage(movie_id, page);
         JSONObject res = new JSONObject();
-        res.put("data", ja.toString());
+//        res.put("data", ja.toString());
+        res.put("data", iPage);
         res.put("code", 0);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
@@ -180,6 +187,7 @@ public class MovieController {
     @RequestMapping("/showMovieBySearch")
     public void showMovieBySearch(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
+
         //此处需要python函数分词
         String name = request.getParameter("name");
         int user_id = Integer.parseInt(request.getParameter("user_id"));
@@ -260,7 +268,7 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
-    @RequestMapping("/showAugustMovieDetail")
+    @PostMapping("/showAugustMovieDetail")
     public void showAugustMovieDetail(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
@@ -374,11 +382,11 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
-    @RequestMapping("/index")
-    public Object index(){
-        Movie movie = movieService.searchMovie(3445906);
-//        Page<Movie> page = new Page<>(1,2);
-        return movie;
-    }
+//    @RequestMapping("/index")
+//    public Object index(){
+//        Movie movie = movieService.searchMovie(3445906);
+////        Page<Movie> page = new Page<>(1,2);
+//        return movie;
+//    }
 
 }

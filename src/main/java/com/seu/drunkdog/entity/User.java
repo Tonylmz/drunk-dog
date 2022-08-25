@@ -12,6 +12,16 @@ public class User {
     private String name;
     private String password;
 
+    private String verifyCode;
+
+    public String getVerifyCode() {
+        return verifyCode;
+    }
+
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
+
     private List<UserTag> weightList;
 
     @Id

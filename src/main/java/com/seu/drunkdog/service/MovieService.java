@@ -28,8 +28,8 @@ public class MovieService {
     public Movie searchTopMovie(int id){
         return movieMapper.getTopMovie(id);
     }
-    public List<Movie> searchAllMovie(){
-        return movieMapper.findAll();
+    public IPage<Movie> searchAllTopMovie(Page<Movie> page){
+        return movieMapper.findAllTopMovieByPage(page);
     }
     public void insertMovieComment(int movie_id, String movie_comment){
         movieMapper.saveMovieComment(movie_id, movie_comment);
@@ -42,6 +42,10 @@ public class MovieService {
     }
     public List<MovieComment> searchMovieCommentById(int movie_id){
         return movieMapper.getMovieComment(movie_id);
+    }
+
+    public IPage<MovieComment> searchMovieCommentByIdAndPage(int movie_id, Page<MovieComment> page){
+        return movieMapper.getMovieCommentByPage(movie_id, page);
     }
     public List<Movie> searchMovieByName(String name){ return movieMapper.getMovieByName(name); }
     public List<Movie> searchMovieByDirectorOrActor(String name){ return movieMapper.getMovieByDirectorOrActor(name); }

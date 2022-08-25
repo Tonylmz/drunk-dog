@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface MovieMapper{
     @Select("select * from movie_top")
-    List<Movie> findAll();
+    IPage<Movie> findAllTopMovieByPage(Page<Movie> page);
     @Insert("insert into movie values(null, #{movie_id},#{name},#{actor},#{cover},#{director},#{score},#{category},#{mins},#{regions},#{release_period}")
     void saveMovie(Movie movie);
     @Select("select * from movie where movie_id=#{movie_id}")
@@ -29,6 +29,8 @@ public interface MovieMapper{
     void saveClickLike(@Param("id") int id);
     @Select("select * from movie_comment where movie_id = #{movie_id}")
     List<MovieComment> getMovieComment(@Param("movie_id") int movie_id);
+    @Select("select * from movie_comment where movie_id = #{movie_id}")
+    IPage<MovieComment> getMovieCommentByPage(@Param("movie_id") int movie_id, Page<MovieComment> page);
 
     @Select("select * from movie where name like concat('%',#{name},'%') ")
     List<Movie> getMovieByName(@Param("name") String name);

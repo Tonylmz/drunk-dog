@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +19,7 @@ import javax.servlet.http.HttpSession;
 //@RequestMapping("/user")
 @Slf4j
 @Service
-@ResponseBody
+//@ResponseBody
 @CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
 public class LoginController {
     @Autowired
@@ -36,9 +33,11 @@ public class LoginController {
 //    @RequestMapping("/login")
 //    public String show(){return "login";}
 //    @RequestMapping("/register")
-//    @RequestMapping("/insert")
-//    public String register(String name, String password){
-//        userService.InsertUser(name, password);
+//    @RequestMapping(value = "/insert",method = RequestMethod.POST)
+//    public String register(@RequestBody User u){
+//        userService.InsertUser(u.getName(), u.getPassword());
+//        System.out.println(u.getName());
+////        System.out.println(password);
 //        return "success";
 //    }
 //    @RequestMapping("/loginIn")
@@ -58,10 +57,12 @@ public class LoginController {
     @RequestMapping("/login")
     public void login(HttpServletRequest request, HttpServletResponse response)throws Exception
     {
-        HttpSession hs=request.getSession();
+//        HttpSession hs=request.getSession();
 
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
+//        String name = u.getName();
+//        String password = u.getPassword();
         String name = request.getParameter("name");
         String password = request.getParameter("password");
 //        String code = request.getParameter("code");
@@ -118,8 +119,8 @@ public class LoginController {
     }
     @RequestMapping("/checkToken")
     public Object checkToken(HttpServletRequest request, HttpServletResponse response)throws Exception{
-        String token = request.getParameter("token");
-//        String token = request.getHeader("token");
+//        String token = request.getParameter("token");
+        String token = request.getHeader("token");
         return tokenService2.tokenSign(token);
 
 //        return tokenService.checkToken(token);

@@ -41,10 +41,10 @@ public class testToken {
 //                        format(claims.getIssuedAt()));
 //                System.out.println("过期时间:"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
 //                        format(claims.getExpiration()));
-                String  username=claims.getSubject();
+                String username = claims.getSubject();
 //                System.out.println(id);
 //                System.out.println(username);
-                User user= userService.searchUserById(id);
+                User user = userService.searchUserById(id);
 //                System.out.println(user.getId());
 //                System.out.println(user.getName());
                 if(username!=null&&claims.getId()!=null&&username.equals(user.getName())){
