@@ -51,7 +51,7 @@ public class RegisterController {
         User a = userService.LoginIn(name);
         if(a == null){
             res.put("msg", "true");
-            res.put("code", 0);
+            res.put("code", 200);
             verifyCode = emailService.sendSimpleMail(name);
             Cookie c = new Cookie("verifyCode", verifyCode);
             c.setMaxAge(10800);
@@ -66,7 +66,7 @@ public class RegisterController {
         }
         else{
             res.put("msg", "duplicate");
-            res.put("code", 1);
+            res.put("code", 100);
             Cookie c = new Cookie("register1", "duplicate");
             c.setMaxAge(10800);
             c.setPath("/");
@@ -105,7 +105,7 @@ public class RegisterController {
 //        String getVerifyCode = request.getParameter("verifyCode");
         if(verifyCode.equals(getVerifyCode)){
             res.put("msg", "true");
-            res.put("code", 0);
+            res.put("code", 200);
             userService.InsertUser(name, password);
             Cookie c = new Cookie("register2","true");
             c.setMaxAge(10800);
@@ -114,7 +114,7 @@ public class RegisterController {
         }
         else{
             res.put("msg", "false");
-            res.put("code", 1);
+            res.put("code", 100);
             Cookie c = new Cookie("register2", "false");
             c.setMaxAge(10800);
             c.setPath("/");

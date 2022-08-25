@@ -104,11 +104,11 @@ public class LoginController {
 
             res.put("user_id", s.getId());
             res.put("msg","true");
-            res.put("code", 0);
+            res.put("code", 200);
         }
         else {
             res.put("msg","false");
-            res.put("code", 1);
+            res.put("code", 100);
             Cookie c=new Cookie("name",name);
             c.setMaxAge(10800);
             c.setPath("/");

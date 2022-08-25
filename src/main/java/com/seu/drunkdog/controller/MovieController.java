@@ -49,7 +49,7 @@ public class MovieController {
 //        System.out.println(iPage.getRecords().get(0).getPictureLink());
         res.put("data", iPage);
         res.put("msg", "true");
-        res.put("code", 0);
+        res.put("code", 200);
         response.getWriter().write(res.toString());
 
     }
@@ -71,9 +71,23 @@ public class MovieController {
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
+        //
+
+
+
+
+
+
+
+
+
+
+
+
+        //
 
     }
     @RequestMapping("/showMovie")
@@ -98,10 +112,22 @@ public class MovieController {
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
 
         response.getWriter().write(res.toString());
+        //
+
+
+
+
+
+
+
+
+
+
+        //
     }
     @RequestMapping("/movieCommentByUser")
     public void movieCommentByUser(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
@@ -112,7 +138,7 @@ public class MovieController {
 //        String movie_comment = request.getParameter("movie_comment");
         movieService.insertMovieComment(movie_id, movie_comment);
         JSONObject res = new JSONObject();
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -151,7 +177,7 @@ public class MovieController {
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
         res.put("data", iPage);
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -177,10 +203,23 @@ public class MovieController {
             }
         }
         JSONObject res = new JSONObject();
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
         //推荐
+
+
+
+
+
+
+
+
+
+
+
+
+        //
     }
 
     @RequestMapping("/clickLike")
@@ -189,7 +228,7 @@ public class MovieController {
 //        int id = Integer.parseInt(request.getParameter("id"));
         movieService.addMovieLike(movie.getId());
         JSONObject res = new JSONObject();
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -209,7 +248,7 @@ public class MovieController {
         if(allMovieBySearchName.size() == 0){
             List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(name);
             if(allMovieBySearchDirectorOrActor.size() == 0){
-                res.put("code", 1);
+                res.put("code", 100);
                 res.put("msg", "false");
             }
             else{
@@ -228,7 +267,7 @@ public class MovieController {
                     ja.add(JSONObject.fromObject(allMovieBySearchDirectorOrActor.get(i)));
                 }
                 res.put("data", ja.toString());
-                res.put("code", 0);
+                res.put("code", 200);
                 res.put("msg", "directorOrActor");
             }
         }
@@ -260,10 +299,25 @@ public class MovieController {
                 ja.add(JSONObject.fromObject(allMovieBySearchName.get(i)));
             }
             res.put("data", ja.toString());
-            res.put("code", 0);
+            res.put("code", 201);
             res.put("msg", "movieName");
         }
         response.getWriter().write(res.toString());
+        //
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //
     }
     @RequestMapping("/showAugustMovie")
     public void showAugustMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -276,7 +330,7 @@ public class MovieController {
         JSONObject res = new JSONObject();
         System.out.println(ja.get(0).getClass());
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -297,9 +351,21 @@ public class MovieController {
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
+        //
+
+
+
+
+
+
+
+
+
+
+        //
     }
     @RequestMapping("/regionBox")
     public void regionBox(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -319,7 +385,7 @@ public class MovieController {
             ja.add(JSONObject.fromObject(ja2[i]));
         }
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
 
@@ -334,7 +400,7 @@ public class MovieController {
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -348,7 +414,7 @@ public class MovieController {
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -362,7 +428,7 @@ public class MovieController {
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -376,7 +442,7 @@ public class MovieController {
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
@@ -390,7 +456,7 @@ public class MovieController {
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }

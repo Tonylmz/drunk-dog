@@ -27,7 +27,7 @@ public class MoviePageController {
         IPage<Movie> iPage = movieService.getMovieByPage(page);
         JSONObject res = new JSONObject();
         res.put("data", iPage);
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }

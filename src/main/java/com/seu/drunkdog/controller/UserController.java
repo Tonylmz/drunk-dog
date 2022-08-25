@@ -1,7 +1,6 @@
 package com.seu.drunkdog.controller;
 
-import com.seu.drunkdog.entity.Movie;
-import com.seu.drunkdog.entity.UserTag;
+import com.seu.drunkdog.entity.*;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONArray;
@@ -9,6 +8,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,18 +26,32 @@ public class UserController {
     @Autowired
     TagService tagService;
     @RequestMapping("/getInitialTag")
-    public void getInitialTag(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
+    public void getInitialTag(@RequestBody InitialTag initialTag, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        String[] initialTagArray = request.getParameterValues("initialTagArray");
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        res.put("code", 0);
+        String[] initialTagArray = initialTag.getInitialTagArray();
+        int user_id = initialTag.getUserId();
+//        String[] initialTagArray = request.getParameterValues("initialTagArray");
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        res.put("code", 200);
         res.put("msg", "true");
         for(int i = 0; i < initialTagArray.length; i++){
             int user_tag = userService.searchIdByTag(initialTagArray[i]);
             userService.InsertUserTag(user_id, user_tag, 5);
         }
+        //
+        //
+
+
+
+
+
+
+
+
+        //
+        //
         response.getWriter().write(res.toString());
     }
 //    @RequestMapping("/clickToSaveTag")
@@ -62,11 +76,12 @@ public class UserController {
 //        response.getWriter().write(res.toString());
 //    }
     @RequestMapping("/drawUserTagCake")
-    public void drawUserTagCake(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
+    public void drawUserTagCake(@RequestBody UserTag userTag, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        int user_id = userTag.getUserId();
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
         List<UserTag> allTagByUserId = userService.searchAllById(user_id);
         if(allTagByUserId.size() == 0){
             int weightTotal = 0;
@@ -82,7 +97,7 @@ public class UserController {
                 ja.add(temp);
             }
             res.put("data", ja.toString());
-            res.put("code", 0);
+            res.put("code", 200);
             res.put("msg", "true");
         }
         else{
@@ -92,11 +107,13 @@ public class UserController {
         response.getWriter().write(res.toString());
     }
     @RequestMapping("/categoryMovie")
-    public void categoryMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
+    public void categoryMovie(@RequestBody CategoryTag categoryTag, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
-        String tag = request.getParameter("tag");
-        int user_id = Integer.parseInt(request.getParameter("user_id"));
+        String tag = categoryTag.getTag();
+        int user_id = categoryTag.getUserId();
+//        String tag = request.getParameter("tag");
+//        int user_id = Integer.parseInt(request.getParameter("user_id"));
         JSONObject res = new JSONObject();
         int user_tag = userService.searchIdByTag(tag);
         if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
@@ -124,7 +141,7 @@ public class UserController {
         }
 
         res.put("data", ja.toString());
-        res.put("code", 0);
+        res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
