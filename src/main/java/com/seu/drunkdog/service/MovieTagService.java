@@ -1,10 +1,9 @@
 package com.seu.drunkdog.service;
 
 import com.seu.drunkdog.mapper.MovieTagMapper;
-import com.seu.drunkdog.entity.MovieTag;
+import com.seu.drunkdog.entity.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Service
@@ -17,7 +16,7 @@ public class MovieTagService {
         movieTagMapper.saveMovieTag(movie_id, movie_tag);
     }
 //    @RequestMapping("/searchMovieTag")
-    public MovieTag searchMovieTag(int movie_id){
+    public Search searchMovieTag(int movie_id){
         return movieTagMapper.getMovieTag(movie_id);
     }
 }

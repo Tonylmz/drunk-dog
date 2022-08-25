@@ -7,6 +7,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,11 +36,12 @@ public class RegisterController {
 //    }
 //    private  static HashMap<String,String> codemap=new HashMap<>();
     @RequestMapping("/register1")
-    public void register1(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession hs = request.getSession();
+    public void register1(@RequestBody User user, HttpServletResponse response) throws Exception {
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        name = request.getParameter("name");
+        name = user.getName();
+//        name = request.getParameter("name");
 //        String password = request.getParameter("password");
 //        User a = new User();
 //        a.setName(name);
@@ -93,12 +95,14 @@ public class RegisterController {
         response.getWriter().write(res.toString());
     }
     @RequestMapping("/register2")
-    public void register2(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession hs = request.getSession();
+    public void register2(@RequestBody User user, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-        String password = request.getParameter("password");
-        String getVerifyCode = request.getParameter("verifyCode");
+        String password = user.getPassword();
+        String getVerifyCode = user.getVerifyCode();
+//        String password = request.getParameter("password");
+//        String getVerifyCode = request.getParameter("verifyCode");
         if(verifyCode.equals(getVerifyCode)){
             res.put("msg", "true");
             res.put("code", 0);

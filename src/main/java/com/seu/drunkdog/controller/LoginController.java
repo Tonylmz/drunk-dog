@@ -55,16 +55,16 @@ public class LoginController {
 //        }
 //    }
     @RequestMapping("/login")
-    public void login(HttpServletRequest request, HttpServletResponse response)throws Exception
+    public void login(@RequestBody User u, HttpServletResponse response)throws Exception
     {
 //        HttpSession hs=request.getSession();
 
         response.setCharacterEncoding("UTF-8");
         JSONObject res = new JSONObject();
-//        String name = u.getName();
-//        String password = u.getPassword();
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
+        String name = u.getName();
+        String password = u.getPassword();
+//        String name = request.getParameter("name");
+//        String password = request.getParameter("password");
 //        String code = request.getParameter("code");
 //        System.out.println("user:"+name+" password:"+password);
         User s = userService.LoginIn(name);

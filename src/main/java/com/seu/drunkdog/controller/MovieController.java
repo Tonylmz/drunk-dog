@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
-import com.seu.drunkdog.entity.Name;
+import com.seu.drunkdog.entity.Search;
+import com.seu.drunkdog.entity.User;
 import com.seu.drunkdog.service.MovieService;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
@@ -31,7 +32,7 @@ public class MovieController {
     @Autowired
     UserService userService;
     @RequestMapping("/getTopMovie")
-    public void getTopMovie(@RequestBody int pageNo, HttpServletResponse response) throws Exception {
+    public void getTopMovie(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception {
 //        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
 //        List<Movie> allMovie = movieService.searchAllTopMovie();
@@ -41,7 +42,7 @@ public class MovieController {
 //        }
 //        response.setCharacterEncoding("UTF-8");
 //        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-        Page<Movie> page = new Page<>(pageNo,10);
+        Page<Movie> page = new Page<>(movieComment.getPageNo(),10);
         IPage<Movie> iPage = movieService.searchAllTopMovie(page);
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
@@ -53,12 +54,12 @@ public class MovieController {
 
     }
     @RequestMapping("/showTopMovie")
-    public void showTopMovie(@RequestBody int id, HttpServletResponse response) throws Exception{
+    public void showTopMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
 //        HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
 //        int id = Integer.parseInt(request.getParameter("id"));
-        Movie movie = movieService.searchTopMovie(id);
+        Movie movie = movieService.searchTopMovie(m.getId());
 //        String[] intCateGory = movie.getCategory().split("\\|");
 //        String[] stringCategory = new String[intCateGory.length - 1];
 //
@@ -76,11 +77,12 @@ public class MovieController {
 
     }
     @RequestMapping("/showMovie")
-    public void showMovie(@RequestBody int movie_id, HttpServletResponse response) throws Exception{
+    public void showMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
 //        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
 //        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+        int movie_id = m.getMovieId();
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length - 1];
@@ -182,10 +184,10 @@ public class MovieController {
     }
 
     @RequestMapping("/clickLike")
-    public void clickLike(@RequestBody int id, HttpServletResponse response) throws Exception{
+    public void clickLike(@RequestBody Movie movie, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
 //        int id = Integer.parseInt(request.getParameter("id"));
-        movieService.addMovieLike(id);
+        movieService.addMovieLike(movie.getId());
         JSONObject res = new JSONObject();
         res.put("code", 0);
         res.put("msg", "true");
@@ -193,7 +195,7 @@ public class MovieController {
     }
 
     @RequestMapping("/showMovieBySearch")
-    public void showMovieBySearch(@RequestBody Name search, HttpServletResponse response) throws Exception {
+    public void showMovieBySearch(@RequestBody Search search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
 
         //此处需要python函数分词
