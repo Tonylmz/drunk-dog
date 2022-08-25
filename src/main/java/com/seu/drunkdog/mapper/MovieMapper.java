@@ -16,8 +16,8 @@ public interface MovieMapper {
     @Select("select * from movie_august where movie_id=#{movie_id}")
     Movie getAugustMovie(@Param("movie_id") int movie_id);
 
-    @Select("select * from movie_top where movie_id = #{movie_id}")
-    Movie getTopMovie(@Param("movie_id") int movie_id);
+    @Select("select * from movie_top where id = #{id}")
+    Movie getTopMovie(@Param("id") int id);
 
     @Insert("insert into movie_comment values(#{movie_id}, #{movie_comment},null,null)")
     void saveMovieComment(@Param("movie_id") int movie_id, @Param("movie_comment") String movie_comment);
@@ -54,4 +54,6 @@ public interface MovieMapper {
     List<Movie> movieGermany();
     @Select("select count(*) from movie_top where country like '%德国%'")
     int numberOfGermanMovie();
+
+
 }

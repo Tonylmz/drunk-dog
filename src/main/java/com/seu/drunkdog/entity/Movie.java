@@ -1,6 +1,6 @@
 package com.seu.drunkdog.entity;
 
-import net.sf.json.JSONObject;
+//import net.sf.json.JSONObject;
 
 import javax.persistence.Id;
 
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 public class Movie {
     private int id;
     private int movie_id;
-    private int year;
+    private String year;
 
     public int getMovie_id() {
         return movie_id;
@@ -18,11 +18,11 @@ public class Movie {
         this.movie_id = movie_id;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
@@ -37,7 +37,25 @@ public class Movie {
 
     private String mins;
 
+    private String country;
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPicture_link() {
+        return picture_link;
+    }
+
+    public void setPicture_link(String picture_link) {
+        this.picture_link = picture_link;
+    }
+
+    private String picture_link;
     private String regions;
     private String storyline;
 

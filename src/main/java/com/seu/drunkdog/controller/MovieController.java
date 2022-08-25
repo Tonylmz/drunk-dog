@@ -8,6 +8,8 @@ import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,22 +46,23 @@ public class MovieController {
         res.put("msg", "true");
         res.put("code", 0);
         response.getWriter().write(res.toString());
+
     }
     @RequestMapping("/showTopMovie")
     public void showTopMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
         HttpSession hs = request.getSession();
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
-        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
-        Movie movie = movieService.searchTopMovie(movie_id);
-        String[] intCateGory = movie.getCategory().split("\\|");
-        String[] stringCategory = new String[intCateGory.length - 1];
-
-        for(int i = 1;i < intCateGory.length; i++){
-            stringCategory[i - 1] = tagService.searchTagById(Integer.parseInt(intCateGory[i]));
-        }
-        String result=String.join("|", stringCategory);
-        movie.setCategory(result);
+        int id = Integer.parseInt(request.getParameter("id"));
+        Movie movie = movieService.searchTopMovie(id);
+//        String[] intCateGory = movie.getCategory().split("\\|");
+//        String[] stringCategory = new String[intCateGory.length - 1];
+//
+//        for(int i = 1;i < intCateGory.length; i++){
+//            stringCategory[i - 1] = tagService.searchTagById(Integer.parseInt(intCateGory[i]));
+//        }
+//        String result=String.join("|", stringCategory);
+//        movie.setCategory(result);
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());
@@ -370,4 +373,12 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+
+    @RequestMapping("/index")
+    public Object index(){
+        Movie movie = movieService.searchMovie(3445906);
+//        Page<Movie> page = new Page<>(1,2);
+        return movie;
+    }
+
 }
