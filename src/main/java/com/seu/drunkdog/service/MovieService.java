@@ -62,4 +62,8 @@ public class MovieService {
     public List<Movie> getMovieGermany(){ return movieMapper.movieGermany(); }
 
     public IPage<Movie> getMovieByPage(Page<Movie> page){ return movieMapper.selectMovieByPage(page); }
+
+    public void deleteAllFromMoviePython(){ movieMapper.deleteFromMoviePython();}
+
+    public List<Integer> getAllFromMoviePython(){ return movieMapper.getFromMoviePython();}
 }

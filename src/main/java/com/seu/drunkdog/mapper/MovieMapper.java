@@ -61,4 +61,9 @@ public interface MovieMapper{
     @Select("select * from movie")
     IPage<Movie> selectMovieByPage(Page<Movie> page);
 
+    @Delete("delete from python_movie where id != 10")
+    void deleteFromMoviePython();
+
+    @Select("select movie_id from python_movie where id != 10")
+    List<Integer> getFromMoviePython();
 }

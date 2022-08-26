@@ -1,6 +1,7 @@
 package com.seu.drunkdog.controller;
 
 import com.seu.drunkdog.entity.*;
+import com.seu.drunkdog.service.MovieService;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONArray;
@@ -25,6 +26,8 @@ public class UserController {
     UserService userService;
     @Autowired
     TagService tagService;
+    @Autowired
+    MovieService movieService;
     @RequestMapping("/getInitialTag")
     public void getInitialTag(@RequestBody InitialTag initialTag, HttpServletResponse response) throws Exception{
 //        HttpSession hs = request.getSession();
@@ -34,22 +37,43 @@ public class UserController {
         int user_id = initialTag.getUserId();
 //        String[] initialTagArray = request.getParameterValues("initialTagArray");
 //        int user_id = Integer.parseInt(request.getParameter("user_id"));
-        res.put("code", 200);
-        res.put("msg", "true");
-        for(int i = 0; i < initialTagArray.length; i++){
-            int user_tag = userService.searchIdByTag(initialTagArray[i]);
-            userService.InsertUserTag(user_id, user_tag, 5);
+
+        if(initialTagArray == null){
+            res.put("code", 100);
+            res.put("msg", "标签为空");
         }
+        else{
+            for(int i = 0; i < initialTagArray.length; i++){
+                int user_tag = userService.searchIdByTag(initialTagArray[i]);
+                userService.InsertUserTag(user_id, user_tag, 5);
+            }
+            res.put("code", 200);
+            res.put("msg", "标签不为空");
+        }
+
         //
         //
+        userService.deleteAllFromUserPython();
+
+
+        String arg = "--user-id " + String.valueOf(user_id);
+        String[] args1 = new String[]{"python", "main.py", arg};
+        Process proc = Runtime.getRuntime().exec(args1);
+
+        Thread.sleep(20000);
+
+        List<Integer> recommendByUser = userService.getAllFromUserPython();
+        JSONArray ja = new JSONArray();
+
+        for(int i = 0;i < 10;i++){
+            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+        }
 
 
 
 
 
-
-
-
+        res.put("data", ja.toString());
         //
         //
         response.getWriter().write(res.toString());
@@ -83,7 +107,7 @@ public class UserController {
         int user_id = userTag.getUserId();
 //        int user_id = Integer.parseInt(request.getParameter("user_id"));
         List<UserTag> allTagByUserId = userService.searchAllById(user_id);
-        if(allTagByUserId.size() == 0){
+        if(allTagByUserId.size() != 0){
             int weightTotal = 0;
             for(int i = 0; i < allTagByUserId.size(); i++){
                 weightTotal += allTagByUserId.get(i).getUserWeight();
@@ -101,7 +125,7 @@ public class UserController {
             res.put("msg", "true");
         }
         else{
-            res.put("code", 1);
+            res.put("code", 100);
             res.put("msg", "false");
         }
         response.getWriter().write(res.toString());

@@ -6,6 +6,15 @@ package com.seu.drunkdog.entity;
 public class Movie {
     private int id;
 
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     private int movieId;
     private String year;

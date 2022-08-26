@@ -40,4 +40,11 @@ public interface UserMapper{
 
     @Select("select * from user_tag where user_id = #{id}")
     User sel(@Param("id") int id);
+
+    @Delete("delete from python_user where id != 10")
+    void deleteFromUserPython();
+
+    @Select("select movie_id from python_user where id != 10")
+    List<Integer> getUserPython();
+
 }

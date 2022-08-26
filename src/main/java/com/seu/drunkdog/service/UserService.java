@@ -55,4 +55,8 @@ public class UserService {
     public UserTag ifNullFindByIdAndTag(int user_id, int user_tag){ return userMapper.findByIdAndTag(user_id, user_tag); }
 
     public void updateUserWeightByIdAndTag(int user_id, int user_tag, double user_weight){ userMapper.updateUserWeightByIdAndTag(user_id, user_tag, user_weight);}
+
+    public void deleteAllFromUserPython(){ userMapper.deleteFromUserPython();}
+
+    public List<Integer> getAllFromUserPython(){ return userMapper.getUserPython();}
 }
