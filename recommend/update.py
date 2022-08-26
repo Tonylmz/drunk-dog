@@ -24,7 +24,7 @@ for i in range(len(movie_id)):
     if int(movie_id[i])>2021:
         datap.append(data[i])
 df = pd.DataFrame(datap)
-conn = pymysql.connect(host='118.31.14.231', port=3306, user='root', password='1234', db='drunkDog', charset='utf8')
+conn = pymysql.connect(host='118.31.14.231', port=3306, user='root', password='66666666', db='drunkDog', charset='utf8')
 cursor = conn.cursor()
 sql = 'DELETE FROM movie_2022'
 cursor.execute(sql)
