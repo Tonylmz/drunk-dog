@@ -12,7 +12,7 @@ import argparse
 
 def DB_item(vector):
     #连接数据库，将数据读取为dataframe的格式
-    conn = create_engine("mysql+pymysql://root:1234@118.31.14.231:3306/drunkDog")
+    conn = create_engine("mysql+pymysql://root:66666@118.31.14.231:3306/drunkDog")
     sql = 'select * from drunkDog.movie'
     file = pd.read_sql(sql,conn)
     genre = file['category']
@@ -27,7 +27,7 @@ def DB_item(vector):
     vector = vector/np.max(vector)
     similarity = np.dot(vector, one_hot_vector.T)/np.linalg.norm(vector, ord=2)/np.linalg.norm(one_hot_vector, ord=2, axis=1)+0.5*score/10
     #计算余弦相似度
-    conn = pymysql.connect(host='118.31.14.231', port=3306, user='root', password='1234', db='drunkDog', charset='utf8')
+    conn = pymysql.connect(host='118.31.14.231', port=3306, user='root', password='66666666', db='drunkDog', charset='utf8')
     cursor = conn.cursor()
     sql = 'DELETE FROM python_movie'
     cursor.execute(sql)
@@ -47,7 +47,7 @@ def DB_item(vector):
 
 def DB_user(vector):
     #连接数据库，将数据读取为dataframe的格式
-    conn = create_engine("mysql+pymysql://root:1234@118.31.14.231:3306/drunkDog")
+    conn = create_engine("mysql+pymysql://root:6666666@118.31.14.231:3306/drunkDog")
     sql='select * from drunkDog.movie'
     file=pd.read_sql(sql,conn)
     genre=file['category']
@@ -62,7 +62,7 @@ def DB_user(vector):
     vector=vector/np.max(vector)
     similarity=np.dot(vector,one_hot_vector.T)/np.linalg.norm(vector,ord=2)/np.linalg.norm(one_hot_vector,ord=2,axis=1)+0.5*score/10
     #计算余弦相似度
-    conn=pymysql.connect(host='118.31.14.231',port=3306,user='root',password='1234',db='drunkDog',charset='utf8')
+    conn=pymysql.connect(host='118.31.14.231',port=3306,user='root',password='66666666',db='drunkDog',charset='utf8')
     cursor=conn.cursor()
     sql = 'DELETE FROM python_user'
     cursor.execute(sql)
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     v_u=np.zeros(27)
     v_i=np.zeros(27)
     if args.user_id != 0:
-        conn = create_engine("mysql+pymysql://root:1234@118.31.14.231:3306/drunkDog")
+        conn = create_engine("mysql+pymysql://root:6666666@118.31.14.231:3306/drunkDog")
         sql = """select * from drunkDog.user_tag where user_id = '{}'""".format(args.user_id)
         file=pd.read_sql(sql,conn)
         gene=file["user_tag"]
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                 v_u[list(gene)[i]] += list(weight)[i]
         DB_user(v_u)
     if args.movie_id != 0:
-        conn = create_engine("mysql+pymysql://root:1234@118.31.14.231:3306/drunkDog")
+        conn = create_engine("mysql+pymysql://root:666666666@118.31.14.231:3306/drunkDog")
         sql = """select * from drunkDog.movie where movie_id = '{}'""".format(args.movie_id)
         file=pd.read_sql(sql,conn)
         gene=file["category"]
