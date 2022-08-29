@@ -23,7 +23,7 @@ import static java.lang.Math.min;
 
 @Service
 @RestController
-@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
+@CrossOrigin(origins = "http://localhost:8081",maxAge = 36000)
 public class MovieController {
     @Autowired
     MovieService movieService;
@@ -31,6 +31,7 @@ public class MovieController {
     TagService tagService;
     @Autowired
     UserService userService;
+
     @RequestMapping("/getTopMovie")
     public void getTopMovie(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception {
 //        HttpSession hs=request.getSession();
@@ -59,7 +60,7 @@ public class MovieController {
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
 //        int id = Integer.parseInt(request.getParameter("id"));
-        Movie movie = movieService.searchTopMovie(m.getId());
+        Movie movie = movieService.searchTopMovie(m.getMovieId());
         int user_id = m.getUserId();
 //        String[] intCateGory = movie.getCategory().split("\\|");
 //        String[] stringCategory = new String[intCateGory.length - 1];
@@ -81,11 +82,12 @@ public class MovieController {
         userService.deleteAllFromUserPython();
 
 
-        String arg = "--user-id " + String.valueOf(user_id) + "--movie-id " +String.valueOf(m.getUserId());
-        String[] args1 = new String[]{"python", "main.py", arg};
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(m.getMovieId());
+//        String[] args1 = new String[]{"python", "main.py", arg};
 
-        Process proc = Runtime.getRuntime().exec(args1);
-        Thread.sleep(20000);
+//        System.out.println(arg);
+        Process proc = Runtime.getRuntime().exec(arg);
+        Thread.sleep(5000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -94,14 +96,20 @@ public class MovieController {
 //        List<Movie> recommendMovie = new ArrayList<>(10);
 //        List<Movie> recommendUser = new ArrayList<>(10);
 //        movieService.searchTopMovie(1).getMovieId();
+        JSONArray ja1 = new JSONArray();
+        JSONArray ja2 = new JSONArray();
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+            ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
         }
 
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+            ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
-        res.put("data", ja.toString());
+        JSONObject jo = new JSONObject();
+        jo.put("detail", ja);
+        jo.put("recommendByMovie", ja1);
+        jo.put("recommendByUser", ja2);
+        res.put("data", jo);
         res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());
@@ -112,47 +120,65 @@ public class MovieController {
     public void showMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
 //        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
-        JSONArray ja = new JSONArray();
-//        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
+//        JSONArray ja = new JSONArray();
+        JSONObject jo = new JSONObject();
+//        int movie_id = Integer.parseInt
+//        (request.getParameter("movie_id"));
         int movie_id = m.getMovieId();
         int user_id = m.getUserId();
         Movie movie = movieService.searchMovie(movie_id);
         String[] intCateGory = movie.getCategory().split("\\|");
+//        System.out.println(intCateGory[1]);
         String[] stringCategory = new String[intCateGory.length - 1];
-        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
-        for (int i = 0; i < min(allMovieCommentById.size(),5); i++) {
-            ja.add(allMovieCommentById.get(i));
-        }
+//        List<MovieComment> allMovieCommentById = movieService.searchMovieCommentById(movie_id);
+
+//        for (int i = 0; i < min(allMovieCommentById.size(),5); i++) {
+//            ja.add(allMovieCommentById.get(i));
+//        }
         for(int i = 1;i < intCateGory.length; i++){
             stringCategory[i - 1] = tagService.searchTagById(Integer.parseInt(intCateGory[i]));
         }
-        String result=String.join("|", stringCategory);
+        String result=String.join("，", stringCategory);
         movie.setCategory(result);
-        ja.add(JSONObject.fromObject(movie));
+//        JSONObject temp = new JSONObject();
+//        temp.put("detail", movie);
+//        ja.add(JSONObject.fromObject(temp));
+        jo.put("detail", movie);
         JSONObject res = new JSONObject();
+
 
         //
         movieService.deleteAllFromMoviePython();
         userService.deleteAllFromUserPython();
 
 
-        String arg = "--user-id " + String.valueOf(user_id) + "--movie-id " +String.valueOf(m.getUserId());
-        String[] args1 = new String[]{"python", "main.py", arg};
-        Process proc = Runtime.getRuntime().exec(args1);
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(m.getUserId());
+//        String[] args1 = new String[]{"python", "main.py", arg};
+        Process proc = Runtime.getRuntime().exec(arg);
 
-        Thread.sleep(20000);
+        Thread.sleep(5000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
+        JSONArray ja1 = new JSONArray();
+        JSONArray ja2 = new JSONArray();
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+            ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
         }
 
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+            ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
-
-        res.put("data", ja.toString());
+//        JSONObject temp1 = new JSONObject();
+//        JSONObject temp2 = new JSONObject();
+//        temp1.put("recommendByMovie", ja1);
+//        temp2.put("recommendByUser", ja2);
+        jo.put("recommendByMovie", ja1);
+        jo.put("recommendByUser", ja2);
+//        ja.add(temp1);
+//        ja.add(temp2);
+//        res.put("data", ja.toString());
+        res.put("data", jo.toString());
         res.put("code", 200);
         res.put("msg", "true");
 
@@ -249,22 +275,25 @@ public class MovieController {
         userService.deleteAllFromUserPython();
 
 
-        String arg = "--user-id " + String.valueOf(user_id);
-        String[] args1 = new String[]{"python", "main.py", arg};
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id);
+//        String[] args1 = new String[]{"python", "main.py", arg};
 
-        Process proc = Runtime.getRuntime().exec(args1);
-        Thread.sleep(20000);
+        Process proc = Runtime.getRuntime().exec(arg);
+        Thread.sleep(5000);
 
-        List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
+//        List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
+        List<Integer> recommendByUser = userService.getAllFromUserPython();
         JSONArray ja = new JSONArray();
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
 
 //        for(int i = 0;i < 10;i++){
 //            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
 //        }
-        res.put("data", ja.toString());
+        JSONObject jo = new JSONObject();
+        jo.put("recommendByUser", ja);
+        res.put("data", jo);
         res.put("code", 200);
         res.put("msg", "true");
 
@@ -289,79 +318,105 @@ public class MovieController {
     public void showMovieBySearch(@RequestBody Search search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
 
+//        movieService.insertResult(search.getName());
         //此处需要python函数分词
         String name = "--text " + search.getName();
         int user_id = search.getUserId();
-        String[] args1 = new String[]{"python", "hmm.py", name};
+//        userService.InsertUser(name, "我喜欢");
+        String args1 = "python E:\\Study\\intern\\hmm.py " + name;
+//        System.out.println(args1);
+        movieService.deleteAllResult();
         Process proc = Runtime.getRuntime().exec(args1);
-        BufferedReader in = new BufferedReader(new InputStreamReader( proc.getInputStream() ));
-        String actionStr = in.readLine();
+        Thread.sleep(5000);
+//        BufferedReader in = new BufferedReader(new InputStreamReader( proc.getInputStream() ));
+//        String actionStr = in.readLine();
 //        if (actionStr != null)
 //            System.out.println(actionStr);
+//        System.out.println("我喜欢");
+//
+//        in.close();
+//        String[] out = actionStr.split(" ");
 
-        in.close();
-        String[] out = actionStr.split(",");
-
-        int k = 0;
-        for(int i = 0;i < out.length;i++){
-            List<Movie> allMovieBySearchName = movieService.searchMovieByName(out[i]);
-            if(allMovieBySearchName != null){
+        List<HmmResult> out = movieService.findResult();
+//        System.out.println(out.size());
+//
+//        System.out.println(out.get(0).getResult());
+        int k = -1;
+        for(int i = 0;i < out.size();i++){
+            List<Movie> allMovieBySearchName = movieService.searchMovieByName(out.get(i).getResult());
+            if(allMovieBySearchName.size()!= 0){
                 k = i;
                 break;
             }
         }
         JSONObject res = new JSONObject();
         JSONArray ja = new JSONArray();
-        if(k == 0){
-            for(int i = 0;i < out.length;i++){
-                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(out[i]);
-                if(allMovieBySearchDirectorOrActor != null){
+//        res.put("标签", out.get(k).getResult());
+//        System.out.println(k);
+        if(k == -1){
+            for(int i = 0;i < out.size();i++){
+                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(out.get(i).getResult());
+                if(allMovieBySearchDirectorOrActor.size()!= 0){
                     k = i;
                     break;
                 }
             }
-            if(k == 0){
+            if(k == -1){
                 res.put("code", 100);
                 res.put("msg", "false");
             }
             else{
-                String name2 = out[k];
-                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(out[k]);
-                int user_tag;
-                if(tagService.searchIdByTag(name2) == 0){
-                    tagService.insertTag(name2);
-                }
-                user_tag = tagService.searchIdByTag(name2);
-                if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
-                    userService.InsertUserTag(user_id, user_tag, 2);
-                }
-                else{
-                    userService.updateUserWeightByIdAndTag(user_id, user_tag, 2);
-                }
+                String name2 = out.get(k).getResult();
+                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(out.get(k).getResult());
+//                int user_tag;
+//                if(tagService.searchIdByTag(name2) == 0){
+//                    tagService.insertTag(name2);
+//                }
+//                user_tag = tagService.searchIdByTag(name2);
+//                if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
+//                    userService.InsertUserTag(user_id, user_tag, 2);
+//                }
+//                else{
+//                    userService.updateUserWeightByIdAndTag(user_id, user_tag, 2);
+//                }
                 for (int i = 0; i < allMovieBySearchDirectorOrActor.size(); i++) {
                     ja.add(JSONObject.fromObject(allMovieBySearchDirectorOrActor.get(i)));
                 }
-                String arg = "--user-id " + String.valueOf(user_id);
-                String[] args2 = new String[]{"python", "main.py", arg};
-                Process proc2 = Runtime.getRuntime().exec(args2);
+                userService.deleteAllFromUserPython();
+                movieService.deleteAllFromMoviePython();
+//                System.out.println(allMovieBySearchDirectorOrActor.size());
+                String arg = "python E:\\Study\\intern\\main.py --movie-id " + String.valueOf(allMovieBySearchDirectorOrActor.get(0).getMovieId()) + "--user-id" + String.valueOf(user_id);
+//                String[] args2 = new String[]{"python", "main.py", arg};
+                Process proc2 = Runtime.getRuntime().exec(arg);
 
-                Thread.sleep(20000);
+                Thread.sleep(5000);
 
                 List<Integer> recommendByUser = userService.getAllFromUserPython();
 
-
+                List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
+                JSONArray ja1 = new JSONArray();
                 for(int i = 0;i < 10;i++){
-                    ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+                    ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
                 }
-                res.put("data", ja.toString());
+                JSONArray ja2 = new JSONArray();
+                for(int i = 0;i < 10;i++){
+                    ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+                }
+                JSONObject jo1 = new JSONObject();
+                jo1.put("detail", ja);
+                jo1.put("recommendByUser", ja1);
+                jo1.put("recommendByMovie", ja2);
+                res.put("data", jo1);
                 res.put("code", 200);
                 res.put("msg", "directorOrActor");
             }
         }
         else{
-            List<Movie> allMovieBySearchName = movieService.searchMovieByName(out[k]);
+            List<Movie> allMovieBySearchName = movieService.searchMovieByName(out.get(k).getResult());
+//            System.out.println(allMovieBySearchName.size());
             for(int i = 0;i < allMovieBySearchName.size(); i++){
                 String[] intCateGory = allMovieBySearchName.get(i).getCategory().split("\\|");
+//                System.out.println(intCateGory.length);
                 for(int j = 1;j < intCateGory.length; j++){
                     if(userService.ifNullFindByIdAndTag(user_id, Integer.parseInt(intCateGory[j])) == null){
                         userService.InsertUserTag(user_id, Integer.parseInt(intCateGory[j]), 1);
@@ -370,39 +425,51 @@ public class MovieController {
                         userService.updateUserWeightByIdAndTag(user_id, Integer.parseInt(intCateGory[j]), 1);
                     }
                 }
-                String firstActor = allMovieBySearchName.get(i).getActor().split("/")[0];
-                int user_tag;
-                if(tagService.searchIdByTag(firstActor) == 0){
-                    tagService.insertTag(firstActor);
-                }
-                user_tag = tagService.searchIdByTag(firstActor);
-                if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
-                    userService.InsertUserTag(user_id, user_tag, 1);
-                }
-                else{
-                    userService.updateUserWeightByIdAndTag(user_id, user_tag, 1);
-                }
+//                String firstActor = allMovieBySearchName.get(i).getActor().split("/")[0];
+//                int user_tag;
+//                if(tagService.searchIdByTag(firstActor) == 0){
+//                    tagService.insertTag(firstActor);
+//                }
+//                user_tag = tagService.searchIdByTag(firstActor);
+//                if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
+//                    userService.InsertUserTag(user_id, user_tag, 1);
+//                }
+//                else{
+//                    userService.updateUserWeightByIdAndTag(user_id, user_tag, 1);
+//                }
             }
+//            System.out.println(1111);
             for (int i = 0; i < allMovieBySearchName.size(); i++) {
                 ja.add(JSONObject.fromObject(allMovieBySearchName.get(i)));
             }
-            String arg = "--user-id " + String.valueOf(user_id) + "--movie-id " +String.valueOf(movieService.searchMovieByName(out[k]).get(0).getMovieId());
-            String[] args2 = new String[]{"python", "main.py", arg};
-            Process proc2 = Runtime.getRuntime().exec(args2);
+            userService.deleteAllFromUserPython();
+            movieService.deleteAllFromMoviePython();
+//            System.out.println(allMovieBySearchName.get(0).getMovieId());
+            String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " + String.valueOf(allMovieBySearchName.get(0).getMovieId());
+//            System.out.println(arg);
+//            String[] args2 = new String[]{"python", "main.py", arg};
+            Process proc2 = Runtime.getRuntime().exec(arg);
 
-            Thread.sleep(20000);
+            Thread.sleep(5000);
 
             List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
             List<Integer> recommendByUser = userService.getAllFromUserPython();
 
+//            System.out.println(recommendByMovie.size());
+//            System.out.println(recommendByUser.size());
+            JSONArray ja1 = new JSONArray();
             for(int i = 0;i < 10;i++){
-                ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+                ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
             }
-
+            JSONArray ja2 = new JSONArray();
             for(int i = 0;i < 10;i++){
-                ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+                ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
             }
-            res.put("data", ja.toString());
+            JSONObject jo = new JSONObject();
+            jo.put("detail", ja);
+            jo.put("recommendByMovie", ja1);
+            jo.put("recommendByUser", ja2);
+            res.put("data", jo);
             res.put("code", 201);
             res.put("msg", "movieName");
         }
@@ -519,7 +586,7 @@ public class MovieController {
             ja.add(JSONObject.fromObject(allAugustMovie.get(i)));
         }
         JSONObject res = new JSONObject();
-        System.out.println(ja.get(0).getClass());
+//        System.out.println(ja.get(0).getClass());
         res.put("data", ja.toString());
         res.put("code", 200);
         res.put("msg", "true");
@@ -542,9 +609,9 @@ public class MovieController {
         movie.setCategory(result);
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
-        res.put("data", ja.toString());
-        res.put("code", 200);
-        res.put("msg", "true");
+        JSONObject jo = new JSONObject();
+        jo.put("detail", ja);
+
 
         //
 
@@ -553,11 +620,13 @@ public class MovieController {
         userService.deleteAllFromUserPython();
 
 
-        String arg = "--user-id " + String.valueOf(user_id) + "--movie-id " +String.valueOf(m.getUserId());
-        String[] args1 = new String[]{"python", "main.py", arg};
-        Process proc = Runtime.getRuntime().exec(args1);
+//        String arg = "--user-id " + String.valueOf(user_id) + "--movie-id " +String.valueOf(m.getMovieId());
+//        String[] args1 = new String[]{"python", "main.py", arg};
+//        Process proc = Runtime.getRuntime().exec(args1);
 
-        Thread.sleep(20000);
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(m.getMovieId());
+        Process proc = Runtime.getRuntime().exec(arg);
+        Thread.sleep(5000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -565,10 +634,15 @@ public class MovieController {
             ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
         }
 
+        JSONArray ja2 = new JSONArray();
         for(int i = 0;i < 10;i++){
-            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+            ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
-
+        jo.put("recommendByMovie", ja);
+        jo.put("recommendByUser", ja2);
+        res.put("data", jo);
+        res.put("code", 200);
+        res.put("msg", "true");
         response.getWriter().write(res.toString());
 
 

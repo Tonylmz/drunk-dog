@@ -2,6 +2,7 @@ package com.seu.drunkdog.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.seu.drunkdog.entity.HmmResult;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
 import org.apache.ibatis.annotations.*;
@@ -18,8 +19,8 @@ public interface MovieMapper{
     @Select("select * from movie_august where movie_id=#{movie_id}")
     Movie getAugustMovie(@Param("movie_id") int movie_id);
 
-    @Select("select * from movie_top where id = #{id}")
-    Movie getTopMovie(@Param("id") int id);
+    @Select("select * from movie_top where movie_id = #{movie_id}")
+    Movie getTopMovie(@Param("movie_id") int movie_id);
 
     @Insert("insert into movie_comment values(#{movie_id}, #{movie_comment},null,null)")
     void saveMovieComment(@Param("movie_id") int movie_id, @Param("movie_comment") String movie_comment);
@@ -61,9 +62,18 @@ public interface MovieMapper{
     @Select("select * from movie")
     IPage<Movie> selectMovieByPage(Page<Movie> page);
 
-    @Delete("delete from python_movie where id != 10")
+    @Delete("delete from python_movie")
     void deleteFromMoviePython();
 
-    @Select("select movie_id from python_movie where id != 10")
+    @Select("select movie_id from python_movie")
     List<Integer> getFromMoviePython();
+
+    @Select("select * from hmm_result")
+    List<HmmResult> getResult();
+
+    @Delete("delete from hmm_result")
+    void deleteResult();
+
+    @Insert("insert into hmm_result values(#{result})")
+    void saveResult(String result);
 }

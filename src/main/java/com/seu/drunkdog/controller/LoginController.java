@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Service
 //@ResponseBody
-@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
+@CrossOrigin(origins = "http://localhost:8081",maxAge = 36000)
 public class LoginController {
     @Autowired
     UserService userService;

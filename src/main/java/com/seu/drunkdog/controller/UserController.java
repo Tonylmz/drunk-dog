@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @Service
-@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
+@CrossOrigin(origins = "http://localhost:8081",maxAge = 36000)
 public class UserController {
     @Autowired
     UserService userService;
@@ -38,6 +38,8 @@ public class UserController {
 //        String[] initialTagArray = request.getParameterValues("initialTagArray");
 //        int user_id = Integer.parseInt(request.getParameter("user_id"));
 
+//        System.out.println(initialTagArray[0]);
+//        res.put("标签",initialTagArray[0]);
         if(initialTagArray == null){
             res.put("code", 100);
             res.put("msg", "标签为空");
@@ -56,11 +58,11 @@ public class UserController {
         userService.deleteAllFromUserPython();
 
 
-        String arg = "--user-id " + String.valueOf(user_id);
-        String[] args1 = new String[]{"python", "main.py", arg};
-        Process proc = Runtime.getRuntime().exec(args1);
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id);
+//        String[] args1 = new String[]{"python", "main.py", arg};
+        Process proc = Runtime.getRuntime().exec(arg);
 
-        Thread.sleep(20000);
+        Thread.sleep(5000);
 
         List<Integer> recommendByUser = userService.getAllFromUserPython();
         JSONArray ja = new JSONArray();
@@ -117,7 +119,7 @@ public class UserController {
                 String user_tag = tagService.searchTagById(allTagByUserId.get(i).getUserTag());
                 JSONObject temp = new JSONObject();
                 temp.put("category", user_tag);
-                temp.put("weight", (allTagByUserId.get(i).getUserWeight() + 0.0)/weightTotal);
+                temp.put("value", (allTagByUserId.get(i).getUserWeight() + 0.0)/weightTotal);
                 ja.add(temp);
             }
             res.put("data", ja.toString());

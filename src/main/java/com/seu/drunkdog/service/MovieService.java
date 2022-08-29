@@ -2,6 +2,7 @@ package com.seu.drunkdog.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.seu.drunkdog.entity.HmmResult;
 import com.seu.drunkdog.entity.Movie;
 import com.seu.drunkdog.entity.MovieComment;
 import com.seu.drunkdog.mapper.MovieMapper;
@@ -66,4 +67,9 @@ public class MovieService {
     public void deleteAllFromMoviePython(){ movieMapper.deleteFromMoviePython();}
 
     public List<Integer> getAllFromMoviePython(){ return movieMapper.getFromMoviePython();}
+
+    public List<HmmResult> findResult(){ return movieMapper.getResult(); }
+    public void deleteAllResult(){ movieMapper.deleteResult();}
+
+    public void insertResult(String result){ movieMapper.saveResult(result);}
 }

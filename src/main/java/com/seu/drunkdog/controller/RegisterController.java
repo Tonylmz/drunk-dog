@@ -6,10 +6,7 @@ import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 //@RequestMapping("/user")
 @Service
-@CrossOrigin(origins = "http://localhost:8080",maxAge = 36000)
+@CrossOrigin(origins = "http://localhost:8081",maxAge = 36000)
 public class RegisterController {
     @Autowired
     EmailService emailService;
@@ -30,7 +27,7 @@ public class RegisterController {
     String name;
 
 //    @RequestMapping("/register")
-//    public String register(String name, String password){
+//    public String register(@RequestParam("name") String name, @RequestParam("password") String password){
 //        userService.InsertUser(name, password);
 //        return emailService.sendSimpleMail(name);
 //    }
