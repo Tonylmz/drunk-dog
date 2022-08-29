@@ -26,7 +26,7 @@ public class testToken {
         Map<String,Object> map=new HashMap<>();
         if(token.equals("")){
             map.put("msg", "请求参数错误或者请求参数缺失");
-            map.put("code", 102);
+            map.put("code", 101);
 //            return false;
         }else {
             try{
@@ -49,9 +49,9 @@ public class testToken {
 //                System.out.println(user.getName());
                 if(username!=null&&claims.getId()!=null&&username.equals(user.getName())){
                     String gettoken=createToken.getToken(user);
-                    map.put("user",user);
-                    map.put("token",gettoken);
-                    map.put("msg", "登录成功");
+                    map.put("userId",user.getId());
+//                    map.put("token",gettoken);
+                    map.put("msg", "成功");
                     map.put("code", 200);
 //                    return true;
                 }else {
@@ -61,7 +61,7 @@ public class testToken {
                 }
             }catch (Exception E){
                 map.put("msg", "token格式正确");
-                map.put("code", 101);
+                map.put("code", 102);
 
             }
         }
