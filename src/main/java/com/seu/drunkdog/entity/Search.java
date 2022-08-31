@@ -7,6 +7,26 @@ public class Search {
 //    private int movieTag;
     private String name;
 
+    private int pageNo;
+
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
     public String getName() {
         return name;
     }

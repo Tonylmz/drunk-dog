@@ -31,6 +31,15 @@ public class Movie {
     private String pictureLink;
     private String regions;
     private String storyline;
+    public TagCloud tagCloud;
+
+    public TagCloud getTagCloud() {
+        return tagCloud;
+    }
+
+    public void setTagCloud(TagCloud tagCloud) {
+        this.tagCloud = tagCloud;
+    }
 
     public int getMovieId() {
         return movieId;
@@ -65,7 +74,6 @@ public class Movie {
     public void setPictureLink(String pictureLink) {
         this.pictureLink = pictureLink;
     }
-
 
 
     public String getMins() {
@@ -108,7 +116,6 @@ public class Movie {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getDirector() {
         return director;

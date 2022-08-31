@@ -1,5 +1,7 @@
 package com.seu.drunkdog.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.*;
 import com.seu.drunkdog.service.MovieService;
 import com.seu.drunkdog.service.TagService;
@@ -40,13 +42,15 @@ public class UserController {
 
 //        System.out.println(initialTagArray[0]);
 //        res.put("标签",initialTagArray[0]);
-        if(initialTagArray == null){
+        if(initialTagArray.length == 0){
             res.put("code", 100);
             res.put("msg", "标签为空");
         }
         else{
+//            System.out.println(initialTagArray.length);
             for(int i = 0; i < initialTagArray.length; i++){
                 int user_tag = userService.searchIdByTag(initialTagArray[i]);
+                System.out.println(user_tag);
                 userService.InsertUserTag(user_id, user_tag, 5);
             }
             res.put("code", 200);
@@ -62,7 +66,7 @@ public class UserController {
 //        String[] args1 = new String[]{"python", "main.py", arg};
         Process proc = Runtime.getRuntime().exec(arg);
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         List<Integer> recommendByUser = userService.getAllFromUserPython();
         JSONArray ja = new JSONArray();
@@ -160,13 +164,18 @@ public class UserController {
 //        }
         int category = tagService.searchIdByTag(tag);
 //        System.out.println(category);
-        List<Movie> allMovieByTag = userService.searchAllMovieByTag(category);
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < allMovieByTag.size(); i++) {
-            ja.add(JSONObject.fromObject(allMovieByTag.get(i)));
-        }
-
-        res.put("data", ja.toString());
+        Page<Movie> page = new Page<>(categoryTag.getPageNo(),12);
+        IPage<Movie> iPage = movieService.getMovieByCategoryAndPage(page, category);
+//        JSONArray ja = new JSONArray();
+//        ja.add(iPage);
+//        List<Movie> allMovieByTag = userService.searchAllMovieByTag(category);
+//
+//        for (int i = 0; i < allMovieByTag.size(); i++) {
+//            ja.add(JSONObject.fromObject(allMovieByTag.get(i)));
+//        }
+        JSONObject jo = new JSONObject();
+        jo.put("detail", iPage);
+        res.put("data", jo);
         res.put("code", 200);
         res.put("msg", "true");
         response.getWriter().write(res.toString());

@@ -60,9 +60,11 @@ public class MovieService {
     public int numOfFrenchMovie(){ return movieMapper.numberOfFrenchMovie();}
     public List<Movie> getMovieFrance(){ return movieMapper.movieFrance(); }
     public int numOfGermanMovie(){ return movieMapper.numberOfGermanMovie();}
-    public List<Movie> getMovieGermany(){ return movieMapper.movieGermany(); }
+    public List<Movie> getMovieJapanOrKorea(){ return movieMapper.movieJapanOrKorea(); }
 
     public IPage<Movie> getMovieByPage(Page<Movie> page){ return movieMapper.selectMovieByPage(page); }
+
+    public IPage<Movie> getMovieByCategoryAndPage(Page<Movie> page, int category){ return movieMapper.selectMovieByCategoryAndPage(page, category); }
 
     public void deleteAllFromMoviePython(){ movieMapper.deleteFromMoviePython();}
 

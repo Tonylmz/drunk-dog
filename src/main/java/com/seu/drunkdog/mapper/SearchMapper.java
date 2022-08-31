@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Mapper
-public interface MovieTagMapper {
+public interface SearchMapper {
     @Insert("insert into movie_tag values(null, #{movie_id}, #{movie_tag})")
     void saveMovieTag(@Param("movie_id")int movie_id, @Param("movie_tag") int movie_tag);
     @Select("select * from movie_tag where movie_id = #{movie_id}")

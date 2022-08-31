@@ -19,6 +19,10 @@ spring:
     port: 587
     # 默认的邮件编码为UTF-8
     default-encoding: UTF-8
+  resources:
+    static-locations: file:E:/Study/intern/posters/posters/
+  mvc:
+    static-path-pattern: /**
 #logging:
 #  level:
 #    root: warn

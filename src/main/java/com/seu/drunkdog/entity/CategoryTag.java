@@ -4,6 +4,16 @@ public class CategoryTag {
     private String tag;
     private int userId;
 
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    private int pageNo;
+
     public String getTag() {
         return tag;
     }

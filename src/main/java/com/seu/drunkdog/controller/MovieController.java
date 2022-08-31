@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.seu.drunkdog.entity.*;
 import com.seu.drunkdog.service.MovieService;
+import com.seu.drunkdog.service.TagCloudService;
 import com.seu.drunkdog.service.TagService;
 import com.seu.drunkdog.service.UserService;
 import net.sf.json.JSONArray;
@@ -14,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.min;
@@ -31,9 +29,11 @@ public class MovieController {
     TagService tagService;
     @Autowired
     UserService userService;
+    @Autowired
+    TagCloudService tagCloudService;
 
     @RequestMapping("/getTopMovie")
-    public void getTopMovie(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception {
+    public void getTopMovie(HttpServletResponse response) throws Exception {
 //        HttpSession hs=request.getSession();
         response.setCharacterEncoding("UTF-8");
 //        List<Movie> allMovie = movieService.searchAllTopMovie();
@@ -43,7 +43,7 @@ public class MovieController {
 //        }
 //        response.setCharacterEncoding("UTF-8");
 //        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-        Page<Movie> page = new Page<>(movieComment.getPageNo(),10);
+        Page<Movie> page = new Page<>(1,50);
         IPage<Movie> iPage = movieService.searchAllTopMovie(page);
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
@@ -61,7 +61,10 @@ public class MovieController {
         JSONArray ja = new JSONArray();
 //        int id = Integer.parseInt(request.getParameter("id"));
         Movie movie = movieService.searchTopMovie(m.getMovieId());
-        int user_id = m.getUserId();
+        TagCloud tagCloud = new TagCloud();
+        tagCloud.setMovieTag(tagCloudService.searchTagByMovieId(m.getMovieId()));
+        movie.setTagCloud(tagCloud);
+//        int user_id = m.getUserId();
 //        String[] intCateGory = movie.getCategory().split("\\|");
 //        String[] stringCategory = new String[intCateGory.length - 1];
 //
@@ -71,6 +74,22 @@ public class MovieController {
 //        String result=String.join("|", stringCategory);
 //        movie.setCategory(result);
         ja.add(JSONObject.fromObject(movie));
+        JSONObject res = new JSONObject();
+        JSONObject jo = new JSONObject();
+        jo.put("detail", ja);
+        res.put("data", jo);
+        res.put("code", 200);
+        res.put("msg", "true");
+        response.getWriter().write(res.toString());
+        //
+
+    }
+    @RequestMapping("/showTopMovieRecommend")
+    public void showTopMovieRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
+//        HttpSession hs = request.getSession();
+        response.setCharacterEncoding("UTF-8");
+        int user_id = m.getUserId();
+
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
 //        res.put("code", 200);
@@ -87,7 +106,7 @@ public class MovieController {
 
 //        System.out.println(arg);
         Process proc = Runtime.getRuntime().exec(arg);
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -106,7 +125,6 @@ public class MovieController {
             ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
         JSONObject jo = new JSONObject();
-        jo.put("detail", ja);
         jo.put("recommendByMovie", ja1);
         jo.put("recommendByUser", ja2);
         res.put("data", jo);
@@ -116,6 +134,7 @@ public class MovieController {
         //
 
     }
+
     @RequestMapping("/showMovie")
     public void showMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
 //        HttpSession hs=request.getSession();
@@ -125,8 +144,11 @@ public class MovieController {
 //        int movie_id = Integer.parseInt
 //        (request.getParameter("movie_id"));
         int movie_id = m.getMovieId();
-        int user_id = m.getUserId();
+//        int user_id = m.getUserId();
         Movie movie = movieService.searchMovie(movie_id);
+        TagCloud tagCloud = new TagCloud();
+        tagCloud.setMovieTag(tagCloudService.searchTagByMovieId(m.getMovieId()));
+        movie.setTagCloud(tagCloud);
         String[] intCateGory = movie.getCategory().split("\\|");
 //        System.out.println(intCateGory[1]);
         String[] stringCategory = new String[intCateGory.length - 1];
@@ -138,12 +160,36 @@ public class MovieController {
         for(int i = 1;i < intCateGory.length; i++){
             stringCategory[i - 1] = tagService.searchTagById(Integer.parseInt(intCateGory[i]));
         }
-        String result=String.join("，", stringCategory);
+        String result=String.join(" ", stringCategory);
         movie.setCategory(result);
 //        JSONObject temp = new JSONObject();
 //        temp.put("detail", movie);
 //        ja.add(JSONObject.fromObject(temp));
         jo.put("detail", movie);
+        JSONObject res = new JSONObject();
+        res.put("data", jo.toString());
+        res.put("code", 200);
+        res.put("msg", "true");
+
+        response.getWriter().write(res.toString());
+
+
+
+
+
+
+        //
+    }
+    @RequestMapping("/showMovieRecommend")
+    public void showMovieRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
+//        HttpSession hs=request.getSession();
+        response.setCharacterEncoding("UTF-8");
+//        JSONArray ja = new JSONArray();
+        JSONObject jo = new JSONObject();
+//        int movie_id = Integer.parseInt
+//        (request.getParameter("movie_id"));
+        int movie_id = m.getMovieId();
+        int user_id = m.getUserId();
         JSONObject res = new JSONObject();
 
 
@@ -152,11 +198,11 @@ public class MovieController {
         userService.deleteAllFromUserPython();
 
 
-        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(m.getUserId());
+        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(movie_id);
 //        String[] args1 = new String[]{"python", "main.py", arg};
         Process proc = Runtime.getRuntime().exec(arg);
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -234,7 +280,7 @@ public class MovieController {
 //        jo1.put("size", size);
 //        ja.add(jo1);
 //        int pageNo = Integer.parseInt(request.getParameter("pageNo"));
-        Page<MovieComment> page = new Page<>(pageNo, 10);
+        Page<MovieComment> page = new Page<>(pageNo, 12);
         IPage<MovieComment> iPage = movieService.searchMovieCommentByIdAndPage(movie_id, page);
         JSONObject res = new JSONObject();
 //        res.put("data", ja.toString());
@@ -279,7 +325,7 @@ public class MovieController {
 //        String[] args1 = new String[]{"python", "main.py", arg};
 
         Process proc = Runtime.getRuntime().exec(arg);
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
 //        List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -313,7 +359,6 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
-
     @RequestMapping("/showMovieBySearch")
     public void showMovieBySearch(@RequestBody Search search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
@@ -322,12 +367,13 @@ public class MovieController {
         //此处需要python函数分词
         String name = "--text " + search.getName();
         int user_id = search.getUserId();
+//        int pageNo = search.getPageNo();
 //        userService.InsertUser(name, "我喜欢");
         String args1 = "python E:\\Study\\intern\\hmm.py " + name;
 //        System.out.println(args1);
         movieService.deleteAllResult();
         Process proc = Runtime.getRuntime().exec(args1);
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 //        BufferedReader in = new BufferedReader(new InputStreamReader( proc.getInputStream() ));
 //        String actionStr = in.readLine();
 //        if (actionStr != null)
@@ -362,12 +408,33 @@ public class MovieController {
                 }
             }
             if(k == -1){
-                res.put("code", 100);
-                res.put("msg", "false");
+                for(int i = 0;i < out.size();i++){
+                    int tag = tagService.searchIdByTag(out.get(i).getResult());
+                    if(tag != 0){
+                        k = i;
+                        break;
+                    }
+                }
+                if(k == -1){
+                    res.put("code", 100);
+                    res.put("msg", "false");
+                }
+                else{
+                    int tag = tagService.searchIdByTag(out.get(k).getResult());
+//                    System.out.println(tag);
+                    Page<Movie> page = new Page<>(1,12);
+                    IPage<Movie> iPage = movieService.getMovieByCategoryAndPage(page, tag);
+                    res.put("data", iPage);
+                    res.put("code", 202);
+                    res.put("name", out.get(k).getResult());
+                    res.put("msg", "movieTag");
+                }
+
+
             }
             else{
                 String name2 = out.get(k).getResult();
-                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(out.get(k).getResult());
+                List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(name2);
 //                int user_tag;
 //                if(tagService.searchIdByTag(name2) == 0){
 //                    tagService.insertTag(name2);
@@ -382,32 +449,12 @@ public class MovieController {
                 for (int i = 0; i < allMovieBySearchDirectorOrActor.size(); i++) {
                     ja.add(JSONObject.fromObject(allMovieBySearchDirectorOrActor.get(i)));
                 }
-                userService.deleteAllFromUserPython();
-                movieService.deleteAllFromMoviePython();
-//                System.out.println(allMovieBySearchDirectorOrActor.size());
-                String arg = "python E:\\Study\\intern\\main.py --movie-id " + String.valueOf(allMovieBySearchDirectorOrActor.get(0).getMovieId()) + "--user-id" + String.valueOf(user_id);
-//                String[] args2 = new String[]{"python", "main.py", arg};
-                Process proc2 = Runtime.getRuntime().exec(arg);
 
-                Thread.sleep(5000);
-
-                List<Integer> recommendByUser = userService.getAllFromUserPython();
-
-                List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
-                JSONArray ja1 = new JSONArray();
-                for(int i = 0;i < 10;i++){
-                    ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
-                }
-                JSONArray ja2 = new JSONArray();
-                for(int i = 0;i < 10;i++){
-                    ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
-                }
                 JSONObject jo1 = new JSONObject();
                 jo1.put("detail", ja);
-                jo1.put("recommendByUser", ja1);
-                jo1.put("recommendByMovie", ja2);
                 res.put("data", jo1);
                 res.put("code", 200);
+                res.put("name", out.get(k).getResult());
                 res.put("msg", "directorOrActor");
             }
         }
@@ -442,35 +489,11 @@ public class MovieController {
             for (int i = 0; i < allMovieBySearchName.size(); i++) {
                 ja.add(JSONObject.fromObject(allMovieBySearchName.get(i)));
             }
-            userService.deleteAllFromUserPython();
-            movieService.deleteAllFromMoviePython();
-//            System.out.println(allMovieBySearchName.get(0).getMovieId());
-            String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " + String.valueOf(allMovieBySearchName.get(0).getMovieId());
-//            System.out.println(arg);
-//            String[] args2 = new String[]{"python", "main.py", arg};
-            Process proc2 = Runtime.getRuntime().exec(arg);
-
-            Thread.sleep(5000);
-
-            List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
-            List<Integer> recommendByUser = userService.getAllFromUserPython();
-
-//            System.out.println(recommendByMovie.size());
-//            System.out.println(recommendByUser.size());
-            JSONArray ja1 = new JSONArray();
-            for(int i = 0;i < 10;i++){
-                ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
-            }
-            JSONArray ja2 = new JSONArray();
-            for(int i = 0;i < 10;i++){
-                ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
-            }
             JSONObject jo = new JSONObject();
             jo.put("detail", ja);
-            jo.put("recommendByMovie", ja1);
-            jo.put("recommendByUser", ja2);
             res.put("data", jo);
             res.put("code", 201);
+            res.put("name", out.get(k).getResult());
             res.put("msg", "movieName");
         }
 //        String name2 = out[k];
@@ -556,7 +579,7 @@ public class MovieController {
 //        String[] args2 = new String[]{"python", "main.py", arg};
 //        Process proc2 = Runtime.getRuntime().exec(args2);
 //
-//        Thread.sleep(20000);
+//        Thread.sleep(10000);
 //
 //        List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
 //        List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -569,6 +592,97 @@ public class MovieController {
 //            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
 //        }
 
+
+
+        response.getWriter().write(res.toString());
+
+
+
+
+        //
+    }
+    @RequestMapping("/showMovieBySearchRecommend")
+    public void showMovieBySearchRecommend(@RequestBody Search search, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("UTF-8");
+
+//        movieService.insertResult(search.getName());
+        //此处需要python函数分词
+        String name = search.getName();
+        int user_id = search.getUserId();
+        String msg = search.getMsg();
+//        int pageNo = search.getPageNo();
+        JSONObject res = new JSONObject();
+        if(msg.equals("movieName")){
+            List<Movie> allMovieBySearchName = movieService.searchMovieByName(name);
+            userService.deleteAllFromUserPython();
+            movieService.deleteAllFromMoviePython();
+//            System.out.println(allMovieBySearchName.get(0).getMovieId());
+            String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " + String.valueOf(allMovieBySearchName.get(0).getMovieId());
+//            System.out.println(arg);
+//            String[] args2 = new String[]{"python", "main.py", arg};
+            Process proc2 = Runtime.getRuntime().exec(arg);
+
+            Thread.sleep(2000);
+
+            List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
+            List<Integer> recommendByUser = userService.getAllFromUserPython();
+
+//            System.out.println(recommendByMovie.size());
+//            System.out.println(recommendByUser.size());
+            JSONArray ja1 = new JSONArray();
+            for(int i = 0;i < 10;i++){
+                ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+            }
+            JSONArray ja2 = new JSONArray();
+            for(int i = 0;i < 10;i++){
+                ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+            }
+            JSONObject jo = new JSONObject();
+            jo.put("recommendByMovie", ja1);
+            jo.put("recommendByUser", ja2);
+            res.put("data", jo);
+            res.put("code", 201);
+            res.put("msg", "movieName");
+        }
+        else if(msg.equals("directorOrActor")){
+            List<Movie> allMovieBySearchDirectorOrActor = movieService.searchMovieByDirectorOrActor(name);
+            userService.deleteAllFromUserPython();
+            movieService.deleteAllFromMoviePython();
+//                System.out.println(allMovieBySearchDirectorOrActor.size());
+            String arg = "python E:\\Study\\intern\\main.py --movie-id " + String.valueOf(allMovieBySearchDirectorOrActor.get(0).getMovieId()) + "--user-id" + String.valueOf(user_id);
+//                String[] args2 = new String[]{"python", "main.py", arg};
+            Process proc2 = Runtime.getRuntime().exec(arg);
+
+            Thread.sleep(2000);
+
+            List<Integer> recommendByUser = userService.getAllFromUserPython();
+
+            List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
+            JSONArray ja1 = new JSONArray();
+            for(int i = 0;i < 10;i++){
+                ja1.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+            }
+            JSONArray ja2 = new JSONArray();
+            for(int i = 0;i < 10;i++){
+                ja2.add(JSONObject.fromObject(movieService.searchMovie(recommendByMovie.get(i))));
+            }
+            JSONObject jo1 = new JSONObject();
+            jo1.put("recommendByUser", ja1);
+            jo1.put("recommendByMovie", ja2);
+            res.put("data", jo1);
+            res.put("code", 200);
+            res.put("msg", "directorOrActor");
+        }
+        else{
+            int pageNo = search.getPageNo();
+            int tag = tagService.searchIdByTag(name);
+//                    System.out.println(tag);
+            Page<Movie> page = new Page<>(pageNo,12);
+            IPage<Movie> iPage = movieService.getMovieByCategoryAndPage(page, tag);
+            res.put("data", iPage);
+            res.put("code", 202);
+            res.put("msg", "movieTag");
+        }
 
         response.getWriter().write(res.toString());
 
@@ -593,24 +707,46 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
-    @PostMapping("/showAugustMovieDetail")
+    @RequestMapping("/showAugustMovieDetail")
     public void showAugustMovieDetail(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
 //        int movie_id = Integer.parseInt(request.getParameter("movie_id"));
         Movie movie = movieService.searchAugustMovie(m.getMovieId());
-        int user_id = m.getUserId();
+        TagCloud tagCloud = new TagCloud();
+        tagCloud.setMovieTag(tagCloudService.searchTagByMovieId(m.getMovieId()));
+        movie.setTagCloud(tagCloud);
+//        int user_id = m.getUserId();
         String[] intCateGory = movie.getCategory().split("\\|");
         String[] stringCategory = new String[intCateGory.length - 1];
         for(int i = 1;i < intCateGory.length; i++){
             stringCategory[i - 1] = tagService.searchTagById(Integer.parseInt(intCateGory[i]));
         }
-        String result=String.join("，", stringCategory);
+        String result=String.join(" ", stringCategory);
         movie.setCategory(result);
         ja.add(JSONObject.fromObject(movie));
         JSONObject res = new JSONObject();
         JSONObject jo = new JSONObject();
         jo.put("detail", ja);
+        res.put("data", jo);
+        res.put("code", 200);
+        res.put("msg", "true");
+        response.getWriter().write(res.toString());
+
+
+
+
+
+        //
+    }
+    @RequestMapping("/showAugustMovieDetailRecommend")
+    public void showAugustMovieDetailRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
+        response.setCharacterEncoding("UTF-8");
+        JSONArray ja = new JSONArray();
+        int user_id = m.getUserId();
+        JSONObject res = new JSONObject();
+        JSONObject jo = new JSONObject();
+//        jo.put("detail", ja);
 
 
         //
@@ -626,7 +762,7 @@ public class MovieController {
 
         String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id) + " --movie-id " +String.valueOf(m.getMovieId());
         Process proc = Runtime.getRuntime().exec(arg);
-        Thread.sleep(5000);
+        Thread.sleep(2000);
 
         List<Integer> recommendByMovie = movieService.getAllFromMoviePython();
         List<Integer> recommendByUser = userService.getAllFromUserPython();
@@ -730,13 +866,14 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
-    @RequestMapping("/regionBoxGermany")
-    public void regionBoxGermany(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    @RequestMapping("/regionBoxJapanOrKorea")
+    public void regionBoxJapanOrKorea(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
         JSONArray ja = new JSONArray();
-        List<Movie> top5MovieGermany = movieService.getMovieGermany();
+        List<Movie> top5MovieJapanOrKorea = movieService.getMovieJapanOrKorea();
+        System.out.println(top5MovieJapanOrKorea.size());
         for (int i = 0; i < 5; i++) {
-            ja.add(JSONObject.fromObject(top5MovieGermany.get(i)));
+            ja.add(JSONObject.fromObject(top5MovieJapanOrKorea.get(i)));
         }
         JSONObject res = new JSONObject();
         res.put("data", ja.toString());

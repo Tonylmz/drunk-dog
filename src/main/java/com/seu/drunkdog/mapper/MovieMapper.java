@@ -37,6 +37,8 @@ public interface MovieMapper{
     List<Movie> getMovieByName(@Param("name") String name);
     @Select("select * from movie where director like concat('%',#{name},'%') or actor like concat('%',#{name},'%')")
     List<Movie> getMovieByDirectorOrActor(@Param("name") String name);
+
+
     @Select("select * from movie_august")
     List<Movie> movieAugust();
     @Select("select * from movie_top where country like '%美国%' order by score desc limit 0,5")
@@ -55,13 +57,15 @@ public interface MovieMapper{
     List<Movie> movieFrance();
     @Select("select count(*) from movie_top where country like '%法国%'")
     int numberOfFrenchMovie();
-    @Select("select * from movie_top where country like '%德国%' order by score desc limit 0,5")
-    List<Movie> movieGermany();
+    @Select("select * from movie_top where country like '%日本%' or country like '%韩国%' order by score desc limit 0,5")
+    List<Movie> movieJapanOrKorea();
     @Select("select count(*) from movie_top where country like '%德国%'")
     int numberOfGermanMovie();
     @Select("select * from movie")
     IPage<Movie> selectMovieByPage(Page<Movie> page);
 
+    @Select("select * from movie where category like concat('%|', #{category}, '|%')")
+    IPage<Movie> selectMovieByCategoryAndPage(Page<Movie> page, @Param("category") int category);
     @Delete("delete from python_movie")
     void deleteFromMoviePython();
 
