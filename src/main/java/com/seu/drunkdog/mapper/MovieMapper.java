@@ -22,15 +22,15 @@ public interface MovieMapper{
     @Select("select * from movie_top where movie_id = #{movie_id}")
     Movie getTopMovie(@Param("movie_id") int movie_id);
 
-    @Insert("insert into movie_comment values(#{movie_id}, #{movie_comment},null,null)")
-    void saveMovieComment(@Param("movie_id") int movie_id, @Param("movie_comment") String movie_comment);
+    @Insert("insert into movie_comment values(#{movie_id}, #{movie_comment},#{score},null)")
+    void saveMovieComment(@Param("movie_id") int movie_id, @Param("movie_comment") String movie_comment, @Param("score") int score);
 //    @Update("update movie_comment set score = #{score} where movie_id = #{movie_id}")
 //    void saveMovieScore(@Param("movie_id") int movie_id, @Param("score") int score);
     @Update("update movie_comment set score = score + 1 where id = #{id}")
     void saveClickLike(@Param("id") int id);
     @Select("select * from movie_comment where movie_id = #{movie_id}")
     List<MovieComment> getMovieComment(@Param("movie_id") int movie_id);
-    @Select("select * from movie_comment where movie_id = #{movie_id}")
+    @Select("select * from movie_comment where movie_id = #{movie_id} order by score desc")
     IPage<MovieComment> getMovieCommentByPage(@Param("movie_id") int movie_id, Page<MovieComment> page);
 
     @Select("select * from movie where name like concat('%',#{name},'%') ")
@@ -59,7 +59,7 @@ public interface MovieMapper{
     int numberOfFrenchMovie();
     @Select("select * from movie_top where country like '%日本%' or country like '%韩国%' order by score desc limit 0,5")
     List<Movie> movieJapanOrKorea();
-    @Select("select count(*) from movie_top where country like '%德国%'")
+    @Select("select count(*) from movie_top where country like '%韩国%' or country like '%日本%'")
     int numberOfGermanMovie();
     @Select("select * from movie")
     IPage<Movie> selectMovieByPage(Page<Movie> page);
@@ -80,4 +80,10 @@ public interface MovieMapper{
 
     @Insert("insert into hmm_result values(#{result})")
     void saveResult(String result);
+
+    @Select("select max(score) from movie_comment where movie_id = #{movie_id}")
+    int maxScore(@Param("movie_id") int movie_id);
+
+    @Select("select * from answer_robot")
+    String answer();
 }

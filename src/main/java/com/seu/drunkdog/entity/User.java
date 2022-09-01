@@ -15,6 +15,16 @@ public class User {
         return verifyCode;
     }
 
+    public int getIfFirstLogin() {
+        return ifFirstLogin;
+    }
+
+    public void setIfFirstLogin(int ifFirstLogin) {
+        this.ifFirstLogin = ifFirstLogin;
+    }
+
+    private int ifFirstLogin;
+
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
     }

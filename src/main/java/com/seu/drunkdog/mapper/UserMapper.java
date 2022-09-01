@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserMapper{
 //    @Select("select id as id, name as name, password as password from user where id = #{id}")
 //    User selectByUserId(@Param("id") int id);
-    @Insert("insert into user values(null, #{name}, #{password})")
+    @Insert("insert into user values(null, #{name}, #{password}, 0)")
     void saveInfo(@Param("name")String name, @Param("password")String password);
     @Select("select * from user where name = #{name}")
     User getInfo(@Param("name") String name);
@@ -47,4 +47,15 @@ public interface UserMapper{
     @Select("select movie_id from python_user")
     List<Integer> getUserPython();
 
+    @Delete("delete from python_unite")
+    void deleteFromUnitePython();
+
+    @Select("select movie_id from python_unite")
+    List<Integer> getUnitePython();
+
+    @Select("select ifFirstLogin from user where name = #{name} and password = #{password}")
+    int ifFirstLogin(@Param("name") String name, @Param("password") String password);
+
+    @Update("update user set ifFirstLogin = 1 where name = #{name} and password = #{password}")
+    void updateIfFirstLogin(@Param("name") String name, @Param("password") String password);
 }

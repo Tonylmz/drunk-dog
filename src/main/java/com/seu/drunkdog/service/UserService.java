@@ -59,4 +59,12 @@ public class UserService {
     public void deleteAllFromUserPython(){ userMapper.deleteFromUserPython();}
 
     public List<Integer> getAllFromUserPython(){ return userMapper.getUserPython();}
+
+    public void deleteAllFromUnitePython(){ userMapper.deleteFromUnitePython(); }
+
+    public List<Integer> getAllFromUnitePython(){ return userMapper.getUnitePython(); }
+
+    public int judgeIfFirstLogin(String name, String password){ return userMapper.ifFirstLogin(name, password); }
+
+    public void updateUserIfFirstLogin(String name, String password){ userMapper.updateIfFirstLogin(name, password);}
 }

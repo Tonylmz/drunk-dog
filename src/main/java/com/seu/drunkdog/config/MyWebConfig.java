@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyWebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("file:E:/Study/intern/posters/posters/");
+        registry.addResourceHandler("/**").addResourceLocations("file:/root/posters");
     }
 
 }

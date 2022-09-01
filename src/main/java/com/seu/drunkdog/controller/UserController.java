@@ -50,8 +50,13 @@ public class UserController {
 //            System.out.println(initialTagArray.length);
             for(int i = 0; i < initialTagArray.length; i++){
                 int user_tag = userService.searchIdByTag(initialTagArray[i]);
-                System.out.println(user_tag);
-                userService.InsertUserTag(user_id, user_tag, 5);
+//                System.out.println(user_tag);
+                if(userService.ifNullFindByIdAndTag(user_id, user_tag) == null){
+                    userService.InsertUserTag(user_id, user_tag, 5);
+                }
+                else{
+                    userService.updateUserWeightByIdAndTag(user_id, user_tag, 5);
+                }
             }
             res.put("code", 200);
             res.put("msg", "标签不为空");
@@ -59,10 +64,38 @@ public class UserController {
 
         //
         //
+//        userService.deleteAllFromUserPython();
+//
+//
+//        String arg = "python main.py --user-id " + String.valueOf(user_id);
+////        String[] args1 = new String[]{"python", "main.py", arg};
+//        Process proc = Runtime.getRuntime().exec(arg);
+//
+//        Thread.sleep(2000);
+//
+//        List<Integer> recommendByUser = userService.getAllFromUserPython();
+//        JSONArray ja = new JSONArray();
+//
+//        for(int i = 0;i < 10;i++){
+//            ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
+//        }
+
+
+
+
+
+//        res.put("data", ja.toString());
+        //
+        //
+        response.getWriter().write(res.toString());
+    }
+    @RequestMapping("/recommendByUser")
+    public void recommendByUser(@RequestBody UserTag userTag, HttpServletResponse response) throws Exception{
+        int user_id = userTag.getUserId();
         userService.deleteAllFromUserPython();
 
 
-        String arg = "python E:\\Study\\intern\\main.py --user-id " + String.valueOf(user_id);
+        String arg = "python main.py --user-id " + String.valueOf(user_id);
 //        String[] args1 = new String[]{"python", "main.py", arg};
         Process proc = Runtime.getRuntime().exec(arg);
 
@@ -74,14 +107,13 @@ public class UserController {
         for(int i = 0;i < 10;i++){
             ja.add(JSONObject.fromObject(movieService.searchMovie(recommendByUser.get(i))));
         }
-
-
-
-
-
+        response.setCharacterEncoding("UTF-8");
+        JSONObject res = new JSONObject();
         res.put("data", ja.toString());
-        //
-        //
+
+        res.put("code", 200);
+        res.put("msg", "true");
+
         response.getWriter().write(res.toString());
     }
 //    @RequestMapping("/clickToSaveTag")
@@ -163,7 +195,7 @@ public class UserController {
 //            userService.updateUserWeight(user_id);
 //        }
         int category = tagService.searchIdByTag(tag);
-//        System.out.println(category);
+        System.out.println(category);
         Page<Movie> page = new Page<>(categoryTag.getPageNo(),12);
         IPage<Movie> iPage = movieService.getMovieByCategoryAndPage(page, category);
 //        JSONArray ja = new JSONArray();

@@ -77,7 +77,13 @@ public class LoginController {
 //            return;
 //        }
         if(s!=null&&s.getPassword().equals(password)) {
-
+            if(userService.judgeIfFirstLogin(name, password) == 0){
+                userService.updateUserIfFirstLogin(name, password);
+                res.put("msg","首次登陆");
+            }
+            else{
+                res.put("msg","非首次登陆");
+            }
 //            hs.setAttribute("name",name);
             Cookie c=new Cookie("name",name);
             c.setMaxAge(10800);
@@ -103,7 +109,7 @@ public class LoginController {
             response.addCookie(d);
 
 //            res.put("user_id", s.getId());
-            res.put("msg","true");
+
             res.put("code", 200);
         }
         else {

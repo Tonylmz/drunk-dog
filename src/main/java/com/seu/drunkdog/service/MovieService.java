@@ -32,8 +32,8 @@ public class MovieService {
     public IPage<Movie> searchAllTopMovie(Page<Movie> page){
         return movieMapper.findAllTopMovieByPage(page);
     }
-    public void insertMovieComment(int movie_id, String movie_comment){
-        movieMapper.saveMovieComment(movie_id, movie_comment);
+    public void insertMovieComment(int movie_id, String movie_comment, int score){
+        movieMapper.saveMovieComment(movie_id, movie_comment, score);
     }
 //    public void insertMovieScore(int movie_id, int score){
 //        movieMapper.saveMovieScore(movie_id, score);
@@ -59,7 +59,7 @@ public class MovieService {
     public List<Movie> getMovieEngland(){ return movieMapper.movieEngland(); }
     public int numOfFrenchMovie(){ return movieMapper.numberOfFrenchMovie();}
     public List<Movie> getMovieFrance(){ return movieMapper.movieFrance(); }
-    public int numOfGermanMovie(){ return movieMapper.numberOfGermanMovie();}
+    public int numOfJapanOrKorea(){ return movieMapper.numberOfGermanMovie();}
     public List<Movie> getMovieJapanOrKorea(){ return movieMapper.movieJapanOrKorea(); }
 
     public IPage<Movie> getMovieByPage(Page<Movie> page){ return movieMapper.selectMovieByPage(page); }
@@ -74,4 +74,8 @@ public class MovieService {
     public void deleteAllResult(){ movieMapper.deleteResult();}
 
     public void insertResult(String result){ movieMapper.saveResult(result);}
+
+    public int getMaxScore(int movie_id){ return movieMapper.maxScore(movie_id); }
+
+    public String getAnswer(){ return movieMapper.answer(); }
 }
