@@ -9,7 +9,6 @@ public class UserTag {
     private int userTag;
     private int userWeight;
 
-    @Id
     public int getId() {
         return id;
     }

@@ -35,9 +35,6 @@ public class MovieService {
     public void insertMovieComment(int movie_id, String movie_comment, int score){
         movieMapper.saveMovieComment(movie_id, movie_comment, score);
     }
-//    public void insertMovieScore(int movie_id, int score){
-//        movieMapper.saveMovieScore(movie_id, score);
-//    }
     public void addMovieLike(int id){
         movieMapper.saveClickLike(id);
     }

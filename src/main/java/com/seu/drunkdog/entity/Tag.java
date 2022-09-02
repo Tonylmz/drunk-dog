@@ -1,17 +1,10 @@
 package com.seu.drunkdog.entity;
 
-import org.springframework.stereotype.Component;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-
 public class Tag {
     private int id;
     
     private String category;
 
-    @Id
     public int getId() {
         return id;
     }

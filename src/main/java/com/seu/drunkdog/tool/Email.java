@@ -1,8 +1,5 @@
-package com.seu.drunkdog.service;
+package com.seu.drunkdog.tool;
 
-import com.seu.drunkdog.tool.VerCodeGenerateUtil;
-import com.seu.drunkdog.tool.VerifyCode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Random;
 @RestController
 @Service
-public class EmailService {
+public class Email {
     @Resource
     private JavaMailSender javaMailSender;
 
@@ -33,9 +30,6 @@ public class EmailService {
         message.setSubject("登录验证码");
         // 设置邮件的正文
         Random random = new Random();
-//        @Autowired
-//        VerCodeGenerateUtil verCodeGenerateUtil;
-//        String code = verCodeGenerateUtil.generateVerCode();
         StringBuilder code = new StringBuilder();
         for (int i = 0; i < 6; i++) {
             int r = random.nextInt(10);

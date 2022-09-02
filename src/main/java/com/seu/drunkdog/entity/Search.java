@@ -2,9 +2,7 @@ package com.seu.drunkdog.entity;
 
 
 public class Search {
-//    private int id;
     private int userId;
-//    private int movieTag;
     private String name;
 
     private int pageNo;
@@ -34,16 +32,6 @@ public class Search {
     public void setName(String name) {
         this.name = name;
     }
-    //    private double movie_weight;
-
-//    @Id
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
 
     public int getUserId() {
         return userId;
@@ -52,20 +40,4 @@ public class Search {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-//    public int getMovieTag() {
-//        return movieTag;
-//    }
-//
-//    public void setMovieTag(int movieTag) {
-//        this.movieTag = movieTag;
-//    }
-
-//    public double getMovie_weight() {
-//        return movie_weight;
-//    }
-//
-//    public void setMovie_weight(double movie_weight) {
-//        this.movie_weight = movie_weight;
-//    }
 }

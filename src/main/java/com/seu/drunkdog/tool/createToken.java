@@ -13,10 +13,6 @@ import java.util.Date;
 @Service
 public class createToken {
     public static String getToken(User user) {
-
-//        String s = String.valueOf(user.getId());
-//        String token= JWT.create().withAudience(s)
-//                .sign(Algorithm.HMAC256(user.getPassword()));
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setId(user.getId() + "")
                 .setSubject(user.getName())
@@ -25,15 +21,4 @@ public class createToken {
                         Date().getTime()+1800000));
         return jwtBuilder.compact();
     }
-//    public static boolean checkToken(String token){
-//        if(token == null){
-//            return false;
-//        }
-//        try {
-//
-//        }catch (Exception e){
-//            return false;
-//        }
-//        return true;
-//    }
 }

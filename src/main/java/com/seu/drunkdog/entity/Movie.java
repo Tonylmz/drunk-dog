@@ -1,6 +1,5 @@
 package com.seu.drunkdog.entity;
 
-//import net.sf.json.JSONObject;
 
 
 public class Movie {

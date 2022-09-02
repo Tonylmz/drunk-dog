@@ -60,11 +60,4 @@ public class MovieComment {
         this.movieComment = movieComment;
     }
 
-//    public String getAll(){
-//        JSONObject js=new JSONObject();
-//        js.put("id",id);
-//        js.put("movie_id",movie_id);
-//        js.put("comment",comment);
-//        return js.toString();
-//    }
 }
