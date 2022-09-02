@@ -29,6 +29,7 @@ public class MovieController {
     @Autowired
     TagCloudService tagCloudService;
 
+    //返回top50电影列表
     @RequestMapping("/getTopMovie")
     public void getTopMovie(@RequestBody Search search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
@@ -41,6 +42,7 @@ public class MovieController {
         res.put("code", 200);
         response.getWriter().write(res.toString());
     }
+    //展示top50电影详情
     @RequestMapping("/showTopMovie")
     public void showTopMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -58,6 +60,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //展示top50电影的推荐
     @RequestMapping("/showTopMovieRecommend")
     public void showTopMovieRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -87,6 +90,7 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
+    //展示电影列表
     @RequestMapping("/showMovie")
     public void showMovie(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -110,6 +114,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //展示某电影的推荐
     @RequestMapping("/showMovieRecommend")
     public void showMovieRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -139,6 +144,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //获得用户的评论
     @RequestMapping("/movieCommentByUser")
     public void movieCommentByUser(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -154,6 +160,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //返回某个电影的全部评论
     @RequestMapping("/getMovieComment")
     public void getMovieComment(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -168,6 +175,7 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
+    //得到用户对某个电影的评分
     @RequestMapping("/getUserScore")
     public void getUserScore(@RequestBody MovieComment movieComment, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -203,6 +211,7 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
+    //获取用户点赞
     @RequestMapping("/clickLike")
     public void clickLike(@RequestBody Movie movie, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -212,6 +221,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //用户通过搜索展示电影，可以搜索电影名，演员或者导演，或者标签类别
     @RequestMapping("/showMovieBySearch")
     public void showMovieBySearch(@RequestBody Search search, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
@@ -304,6 +314,7 @@ public class MovieController {
         }
         response.getWriter().write(res.toString());
     }
+    //根据搜索内容进行个性化推荐
     @RequestMapping("/showMovieBySearchRecommend")
     public void showMovieBySearchRecommend(@RequestBody Search search, HttpServletResponse response) throws Exception {
         String name = search.getName();
@@ -371,6 +382,7 @@ public class MovieController {
         }
         response.getWriter().write(res.toString());
     }
+    //展示八月热搜电影
     @RequestMapping("/showAugustMovie")
     public void showAugustMovie(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -386,6 +398,7 @@ public class MovieController {
         response.getWriter().write(res.toString());
     }
 
+    //展示八月电影详情
     @RequestMapping("/showAugustMovieDetail")
     public void showAugustMovieDetail(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -410,6 +423,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //展示八月电影推荐内容
     @RequestMapping("/showAugustMovieDetailRecommend")
     public void showAugustMovieDetailRecommend(@RequestBody Movie m, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -438,6 +452,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画各个国家的票房分布
     @RequestMapping("/regionBox")
     public void regionBox(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -460,6 +475,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画美国票房
     @RequestMapping("/regionBoxAmerica")
     public void regionBoxAmerica(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -474,6 +490,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画中国票房
     @RequestMapping("/regionBoxChina")
     public void regionBoxChina(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -488,6 +505,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画英国票房
     @RequestMapping("/regionBoxEngland")
     public void regionBoxEngland(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -502,6 +520,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画法国票房
     @RequestMapping("/regionBoxFrance")
     public void regionBoxFrance(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -516,6 +535,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //画日韩票房
     @RequestMapping("/regionBoxJapanOrKorea")
     public void regionBoxJapanOrKorea(HttpServletRequest request, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -530,6 +550,7 @@ public class MovieController {
         res.put("msg", "true");
         response.getWriter().write(res.toString());
     }
+    //问答系统，获取用户输入内容然后返回回答结果
     @RequestMapping("/AQS")
     public void AQS(@RequestBody Search search, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("utf-8");

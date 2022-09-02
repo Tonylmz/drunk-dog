@@ -28,6 +28,7 @@ public class UserController {
     TagService tagService;
     @Autowired
     MovieService movieService;
+    //在用户冷启动时获取用户选择的标签
     @RequestMapping("/getInitialTag")
     public void getInitialTag(@RequestBody InitialTag initialTag, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -53,6 +54,7 @@ public class UserController {
         }
         response.getWriter().write(res.toString());
     }
+    //每次在展示主页时给用户推荐的电影列表
     @RequestMapping("/recommendByUser")
     public void recommendByUser(@RequestBody UserTag userTag, HttpServletResponse response) throws Exception{
         int user_id = userTag.getUserId();
@@ -79,6 +81,7 @@ public class UserController {
 
         response.getWriter().write(res.toString());
     }
+    //根据用户标签权重画标签权重饼图
     @RequestMapping("/drawUserTagCake")
     public void drawUserTagCake(@RequestBody UserTag userTag, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");
@@ -108,6 +111,7 @@ public class UserController {
         }
         response.getWriter().write(res.toString());
     }
+    //选中某个电影标签后分页展示电影信息
     @RequestMapping("/categoryMovie")
     public void categoryMovie(@RequestBody CategoryTag categoryTag, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");

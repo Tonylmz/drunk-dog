@@ -22,6 +22,7 @@ public class RegisterController {
     String verifyCode;
     String name;
 
+    //用户注册接口1，用于接收用户发送的注册邮箱并且发送验证码
     @RequestMapping("/register1")
     public void register1(@RequestBody User user, HttpServletResponse response) throws Exception {
         response.setCharacterEncoding("UTF-8");
@@ -39,6 +40,7 @@ public class RegisterController {
         }
         response.getWriter().write(res.toString());
     }
+    //用户注册接口2，用于接收用户输入的验证码和密码并且传给前端结果
     @RequestMapping("/register2")
     public void register2(@RequestBody User user, HttpServletResponse response) throws Exception{
         response.setCharacterEncoding("UTF-8");

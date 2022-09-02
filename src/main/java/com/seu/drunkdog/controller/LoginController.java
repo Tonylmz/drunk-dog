@@ -24,6 +24,7 @@ public class LoginController {
     createToken tokenService;
     @Autowired
     testToken tokenService2;
+    //用户登陆接口，用户登陆之后会返回给用户一个token，前端保存
     @RequestMapping("/login")
     public void login(@RequestBody User u, HttpServletResponse response)throws Exception
     {
@@ -51,6 +52,7 @@ public class LoginController {
 
         response.getWriter().write(res.toString());
     }
+    //验证token接口，前端需要userId时需要发送token然后后端返回userId
     @RequestMapping("/checkToken")
     public Object checkToken(HttpServletRequest request)throws Exception{
         String token = request.getHeader("token");
