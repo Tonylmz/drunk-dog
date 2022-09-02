@@ -122,7 +122,6 @@ public class UserController {
             userService.updateUserWeightByIdAndTag(user_id, user_tag, 3);
         }
         int category = tagService.searchIdByTag(tag);
-        System.out.println(category);
         Page<Movie> page = new Page<>(categoryTag.getPageNo(),12);
         IPage<Movie> iPage = movieService.getMovieByCategoryAndPage(page, category);
         JSONObject jo = new JSONObject();

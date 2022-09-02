@@ -16,17 +16,6 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-//    @RequestMapping("/mybatisFindById")
-//    public User mybatisFindById(int id){
-//        return userMapper.selectByUserId(id);
-//    }
-//    @RequestMapping("/insertUser")
-//    public String insertUser(String name, String password){
-//        int update = jdbcTemplate.update("insert into user values (null, ?, ?)", name, password);
-//        return update > 0?"success":"fail";
-//    }
     public User LoginIn(String name){
         return userMapper.getInfo(name);
     }
@@ -46,7 +35,6 @@ public class UserService {
 
     public int searchIdByTag(String category){ return userMapper.getIdByTag(category); }
 
-//    public void updateUserWeight(int user_id){ userMapper.updateUserWeight(user_id); }
 
     public List<Movie> searchAllMovieByTag(int tag){ return userMapper.getAllMovieByTag(tag); }
 
