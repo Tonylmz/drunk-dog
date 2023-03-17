@@ -1,4 +1,5 @@
-# 工程简介
+# SEU summer course movie recommend system
 
-# 延伸阅读
+## Project Leader: Mingze Li
+## Team Member: Yuqi Ren, Kunyang Yu, Zihao Wang, Huikang Hu
 
